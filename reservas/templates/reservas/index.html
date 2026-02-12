@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="home" class="hero">
+    <div class="container hero-content">
+        <h1>Domina la Cancha</h1>
+        <p>Reserva tu espacio deportivo en segundos. La plataforma más rápida y eficiente para deportistas y complejos.
+        </p>
+        <div class="hero-btns">
+            <a href="#sports" class="btn btn-primary">Explorar Canchas</a>
+            <a href="/admin" class="btn btn-secondary">Gestionar Mi Centro</a>
+        </div>
+    </div>
+</section>
+
+<section id="sports" class="section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Nuestras Disciplinas</h2>
+            <p>Selecciona tu deporte favorito y encuentra la cancha perfecta.</p>
+        </div>
+        <div class="sports-grid">
+            <div class="sport-card">
+                <img src="{% static 'reservas/images/sport_football_card.png' %}" alt="Fútbol">
+                <div class="sport-card-content">
+                    <h3>Fútbol</h3>
+                    <p>Gramilla sintética de última generación. Iluminación profesional.</p>
+                </div>
+            </div>
+            <div class="sport-card">
+                <img src="{% static 'reservas/images/sport_tennis_card.png' %}" alt="Tenis">
+                <div class="sport-card-content">
+                    <h3>Tenis</h3>
+                    <p>Canchas de polvo de ladrillo y superficie dura certificadas.</p>
+                </div>
+            </div>
+            <div class="sport-card">
+                <img src="{% static 'reservas/images/sport_paddle_card.png' %}" alt="Pádel">
+                <div class="sport-card-content">
+                    <h3>Pádel</h3>
+                    <p>Panorámicas de vidrio templado. El deporte que está revolucionando.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="section" style="background: rgba(255,255,255,0.02)">
+    <div class="container">
+        <div class="section-title">
+            <h2>¿Cómo Funciona?</h2>
+            <p>Reserva en tres simples pasos.</p>
+        </div>
+        <div class="sports-grid" style="text-align: center;">
+            <div class="step">
+                <h1 style="color: var(--primary); font-size: 4rem;">1</h1>
+                <h3>Elige Deporte</h3>
+                <p>Busca disponibilidad en tiempo real.</p>
+            </div>
+            <div class="step">
+                <h1 style="color: var(--primary); font-size: 4rem;">2</h1>
+                <h3>Reserva Online</h3>
+                <p>Confirma tu horario y paga de forma segura.</p>
+            </div>
+            <div class="step">
+                <h1 style="color: var(--primary); font-size: 4rem;">3</h1>
+                <h3>¡A Jugar!</h3>
+                <p>Presenta tu código en el complejo y disfruta.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
