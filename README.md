@@ -1,4 +1,5 @@
 # Sistema de Gestión de Reservas de Canchas Deportivas
+## Desarrollado por: Mateo Sanz Medina, Jose Miguel Sánchez, Samuel Arango Echeverri
 
 Este proyecto es una plataforma digital desarrollada en Django para la gestión de reservas de canchas deportivas. Permite a los usuarios consultar disponibilidad, realizar reservas y gestionar pagos, centralizando la administración para los dueños de complejos deportivos.
 
