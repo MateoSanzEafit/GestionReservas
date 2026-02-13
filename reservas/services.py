@@ -1,76 +1,56 @@
+# reservas/services.py
 from .models import Reserva, Cancha, Usuario
-from django.db.models import Q
-from datetime import datetime
-import uuid
+from .domain.reserva_builder import ReservaBuilder
+from .infra.notificador_factory import NotificadorFactory
 
-def check_availability(cancha, fecha, hora_inicio, hora_fin):
-    """
-    Check if a court is available for a given date and time range.
-    Returns True if available, False otherwise.
-    """
-    overlapping_reservations = Reserva.objects.filter(
-        cancha=cancha,
-        fecha=fecha,
-        estado__in=['PENDIENTE', 'CONFIRMADA'] # Don't count cancelled reservations
-    ).filter(
-        Q(hora_inicio__lt=hora_fin) & Q(hora_fin__gt=hora_inicio)
-    )
-    
-    return not overlapping_reservations.exists()
 
-def create_reservation(usuario_id, cancha_id, fecha, hora_inicio, hora_fin):
-    """
-    Creates a reservation if the court is available.
-    Raises ValueError if inputs are invalid or court is not available.
-    """
-    try:
+class ReservaService:
+    def __init__(self, notificador=None):
+        self.notificador = notificador or NotificadorFactory.crear()
+
+    def crear_reserva(self, usuario_id, cancha_id, fecha, hora_inicio, hora_fin):
         usuario = Usuario.objects.get(id=usuario_id)
         cancha = Cancha.objects.get(id=cancha_id)
-    except (Usuario.DoesNotExist, Cancha.DoesNotExist):
-        raise ValueError("Usuario o Cancha no encontrados.")
 
-    if not check_availability(cancha, fecha, hora_inicio, hora_fin):
-        raise ValueError("La cancha no está disponible en el horario seleccionado.")
+        reserva = (
+            ReservaBuilder()
+            .para_usuario(usuario)
+            .para_cancha(cancha)
+            .en_fecha(fecha)
+            .desde(hora_inicio)
+            .hasta(hora_fin)
+            .build()
+        )
 
-    # Calculate cost (simple implementation)
-    # Assuming duration is in hours, can be fractional
-    # Convert time objects to datetime for subtraction
-    dummy_date = datetime.today().date()
-    start_dt = datetime.combine(dummy_date, hora_inicio)
-    end_dt = datetime.combine(dummy_date, hora_fin)
-    duration_hours = (end_dt - start_dt).total_seconds() / 3600
-    
-    if duration_hours <= 0:
-         raise ValueError("La hora de fin debe ser posterior a la hora de inicio.")
+        reserva.save()
+        self.notificador.enviar_confirmacion(reserva)
+        return reserva
 
-    costo_total = float(cancha.tarifa_por_hora) * duration_hours
+    def cancelar(self, reserva_id):
+        try:
+            r = Reserva.objects.get(id=reserva_id)
+            r.estado = "CANCELADA"
+            r.save()
+            return True
+        except Reserva.DoesNotExist:
+            return False
 
-    reserva = Reserva.objects.create(
-        id=str(uuid.uuid4()), # Generate a UUID for the ID since it is a CharField
-        usuario=usuario,
-        cancha=cancha,
-        fecha=fecha,
-        hora_inicio=hora_inicio,
-        hora_fin=hora_fin,
-        costo_total=costo_total,
-        estado='PENDIENTE'
-    )
-    return reserva
+    def confirmar(self, reserva_id):
+        try:
+            r = Reserva.objects.get(id=reserva_id)
+            r.estado = "CONFIRMADA"
+            r.save()
+            return True
+        except Reserva.DoesNotExist:
+            return False
+
+
+# ✅ Wrappers para NO romper tus tests actuales
+def create_reservation(usuario_id, cancha_id, fecha, hora_inicio, hora_fin):
+    return ReservaService().crear_reserva(usuario_id, cancha_id, fecha, hora_inicio, hora_fin)
 
 def cancel_reservation(reserva_id):
-    try:
-        reserva = Reserva.objects.get(id=reserva_id)
-        reserva.estado = 'CANCELADA'
-        reserva.save()
-        return True
-    except Reserva.DoesNotExist:
-        return False
+    return ReservaService().cancelar(reserva_id)
 
 def confirm_reservation(reserva_id):
-    try:
-        reserva = Reserva.objects.get(id=reserva_id)
-        reserva.estado = 'CONFIRMADA'
-        reserva.save()
-        return True
-    except Reserva.DoesNotExist:
-        return False
+    return ReservaService().confirmar(reserva_id)
