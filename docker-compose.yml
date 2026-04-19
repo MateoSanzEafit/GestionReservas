@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Monolito Django
+  monolito_django:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MICROSERVICE_NOTIF_URL=http://micro_notificaciones:5001/api/v2/notificaciones/send
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  # Microservicio Flask (Notificaciones)
+  micro_notificaciones:
+    build: ./micro_notificaciones
+    volumes:
+      - ./micro_notificaciones:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5002:5001"
+
+  # Base de Datos (SQLite por ahora, pero lo dejamos listo)
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=gestion_reservas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Nota: El proyecto actual usa SQLite, pero en un entorno Dockerizado 
+    # es mejor usar un servicio separado. Por simplicidad del taller
+    # seguiremos usando SQLite si el código no está configurado para Postgres.
+
+  # Orquestador Nginx
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - monolito_django
+      - micro_notificaciones
+
+volumes:
+  postgres_data:
