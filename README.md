@@ -13,15 +13,20 @@ Este proyecto es una plataforma digital desarrollada en Django para la gestión 
 
 ## Tecnologías Utilizadas
 
-- **Backend**: Python 3, Django
+- **Backend Monolito**: Python 3, Django
+- **Microservicio (Notificaciones)**: Python 3, Flask
+- **Orquestación y API Gateway**: Docker, Docker Compose, Nginx
 - **Base de Datos**: SQLite (por defecto en desarrollo), compatible con PostgreSQL/MySQL via configuración.
 
 ## Estructura del Proyecto
 
-El proyecto sigue la estructura estándar de Django:
+El proyecto está compuesto por un monolito y un microservicio orquestados mediante contenedores:
 
-- `gestion_canchas/`: Configuración principal del proyecto.
+- `gestion_canchas/`: Configuración principal del proyecto Django.
 - `reservas/`: Aplicación principal que contiene la lógica de negocio (Modelos, Vistas, URLs).
+- `micro_notificaciones/`: Microservicio en Flask extraído usando el patrón Strangler.
+- `nginx/`: Configuración del API Gateway que enruta el tráfico.
+- `docker-compose.yml`: Archivo de orquestación para levantar todos los servicios.
 - `manage.py`: Utilidad de línea de comandos de Django.
 
 ### Modelos de Datos
@@ -36,37 +41,39 @@ El sistema se basa en los siguientes modelos principales (definidos en `reservas
 
 ## Configuración e Instalación
 
-1.  **Clonar el repositorio** (si aplica):
+### Método 1: Ejecución con Docker (Recomendado - Arquitectura Strangler Pattern)
+
+Gracias a la implementación del **Strangler Pattern** (Taller 02), el sistema ahora funciona orquestando el monolito (Django) y el microservicio (Flask) a través de un API Gateway (Nginx).
+
+1.  Asegúrate de tener instalado **Docker** y **Docker Compose**.
+2.  En la raíz del proyecto, ejecuta:
+    ```bash
+    docker-compose up --build -d
+    ```
+3.  El proyecto estará disponible en `http://localhost/` (puerto 80). Nginx enrutará `/api/v1/` a Django y `/api/v2/notificaciones/` al microservicio Flask.
+
+### Método 2: Ejecución Local Tradicional (Solo Django)
+
+1.  **Clonar el repositorio**:
     ```bash
     git clone <url-del-repositorio>
     cd <nombre-del-directorio>
     ```
 
-2.  **Crear un entorno virtual** (recomendado):
+2.  **Crear un entorno virtual** e instalar dependencias:
     ```bash
     python -m venv venv
-    # En Windows
-    venv\Scripts\activate
-    # En Mac/Linux
-    source venv/bin/activate
+    venv\Scripts\activate  # En Windows
+    # source venv/bin/activate  # En Mac/Linux
+    pip install -r requirements.txt
     ```
 
-3.  **Instalar dependencias**:
-    ```bash
-    pip install django
-    ```
-
-4.  **Aplicar migraciones**:
+3.  **Aplicar migraciones y ejecutar**:
     ```bash
     python manage.py migrate
-    ```
-
-5.  **Ejecutar el servidor de desarrollo**:
-    ```bash
     python manage.py runserver
     ```
-
-    El proyecto estará disponible en `http://127.0.0.1:8000/`.
+    El monolito estará disponible en `http://127.0.0.1:8000/`.
 
 ## Uso
 
