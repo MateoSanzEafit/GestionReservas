@@ -6,136 +6,25 @@
 {% block extra_css %}
 <style>
     .login-wrapper {
-        min-height: calc(100vh - 80px);
-        /* Adjust for navbar */
+        min-height: 80vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.1), transparent),
-            radial-gradient(circle at bottom left, rgba(79, 172, 254, 0.1), transparent);
-        padding: 20px;
+        background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.05), transparent),
+                    radial-gradient(circle at bottom left, rgba(79, 172, 254, 0.05), transparent);
+        padding: 40px 20px;
     }
 
     .login-card {
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--bg-card);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border-glow);
         border-radius: 24px;
         padding: 40px;
         width: 100%;
         max-width: 450px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .login-header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .login-header h2 {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 8px;
-        background: linear-gradient(to right, #fff, var(--primary));
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .login-header p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: var(--text);
-        font-size: 0.9rem;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 14px 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        color: #fff;
-        font-size: 1rem;
-        transition: all 0.3s;
-        outline: none;
-    }
-
-    .form-group input:focus {
-        border-color: var(--primary);
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-    }
-
-    .login-btn {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: #000;
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 10px;
-    }
-
-    .login-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(0, 242, 254, 0.4);
-    }
-
-    .error-msg {
-        background: rgba(255, 59, 48, 0.1);
-        border: 1px solid rgba(255, 59, 48, 0.3);
-        color: #ff3b30;
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        font-size: 0.9rem;
-        text-align: center;
-    }
-
-    .login-footer {
-        text-align: center;
-        margin-top: 25px;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-
-    .login-footer a {
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .login-footer a:hover {
-        text-decoration: underline;
     }
 </style>
 {% endblock %}
@@ -143,34 +32,42 @@
 {% block content %}
 <div class="login-wrapper">
     <div class="login-card">
-        <div class="login-header">
-            <h2>Bienvenido</h2>
-            <p>Ingresa tus credenciales para continuar</p>
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-lock text-primary me-2"></i>Ingreso</h2>
+            <p class="text-muted small">Ingresa tus credenciales para acceder a tu panel.</p>
         </div>
 
         {% if form.errors %}
-        <div class="error-msg">
-            Usuario o contraseña incorrectos. Por favor intenta de nuevo.
+        <div class="alert alert-danger border-0 small rounded-3 py-3 text-center mb-4" style="background: rgba(220,53,69,0.1); color: #dc3545;">
+            <i class="fa-solid fa-circle-exclamation me-1"></i> Usuario o contraseña incorrectos.
         </div>
         {% endif %}
 
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="id_username">Nombre de Usuario</label>
-                <input type="text" name="username" id="id_username" placeholder="Tu usuario" required autofocus>
+            <div class="mb-3">
+                <label for="id_username" class="form-label small text-muted">Nombre de Usuario</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-black border border-glow text-muted"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" name="username" id="id_username" class="form-control bg-black border border-glow text-white py-2" placeholder="Tu usuario" required autofocus>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="id_password">Contraseña</label>
-                <input type="password" name="password" id="id_password" placeholder="••••••••" required>
+            <div class="mb-4">
+                <label for="id_password" class="form-label small text-muted">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-black border border-glow text-muted"><i class="fa-solid fa-key"></i></span>
+                    <input type="password" name="password" id="id_password" class="form-control bg-black border border-glow text-white py-2" placeholder="••••••••" required>
+                </div>
             </div>
 
-            <button type="submit" class="login-btn">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-glow-primary w-100 py-3 fw-bold">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>Iniciar Sesión
+            </button>
         </form>
 
-        <div class="login-footer">
-            ¿No tienes cuenta? <a href="{% url 'signup' %}">Regístrate aquí</a>
+        <div class="text-center mt-4 pt-2 border-top border-glow text-muted small">
+            ¿No tienes cuenta? <a href="{% url 'signup' %}" class="text-primary fw-bold text-decoration-none">Regístrate aquí</a>
         </div>
     </div>
 </div>

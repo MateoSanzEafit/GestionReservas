@@ -5,51 +5,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GestionCanchas - Reserva tu Espacio{% endblock %}</title>
+    <title>{% block title %}GestionCanchas — Reserva tu Espacio Deportivo{% endblock %}</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{% static 'reservas/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom Cyber Sporty Theme Styling -->
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(255, 255, 255, 0.08);
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent-green: #39ff14;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar-custom {
+            background: rgba(9, 13, 22, 0.8) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .navbar-brand-custom {
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: #fff !important;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand-custom span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link-custom {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: var(--primary) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Premium Buttons */
+        .btn-glow-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #020617 !important;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+        }
+
+        .btn-glow-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.45);
+        }
+
+        .btn-outline-custom {
+            border: 1px solid var(--primary);
+            color: var(--primary) !important;
+            font-weight: 600;
+            border-radius: 50px;
+            padding: 9px 24px;
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-custom:hover {
+            background: var(--primary);
+            color: #020617 !important;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            background: rgba(4, 7, 13, 0.95);
+            border-top: 1px solid var(--border-glow);
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <nav class="navbar">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
         <div class="container">
-            <a href="/" class="logo">Gestion<span>Canchas</span></a>
-            <ul class="nav-links">
-                <li><a href="#home">Inicio</a></li>
-                <li><a href="#sports">Deportes</a></li>
-                <li><a href="#how-it-works">Cómo Funciona</a></li>
-                {% if user.is_authenticated %}
-                <li><a href="/admin" class="btn btn-secondary">Admin</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary"
-                            style="background:none; border:1px solid var(--accent); color:var(--accent); cursor:pointer;">Cerrar
-                            Sesión</button>
-                    </form>
-                </li>
-                {% else %}
-                <li><a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a></li>
-                {% endif %}
-            </ul>
+            <a class="navbar-brand navbar-brand-custom" href="/">
+                <i class="fa-solid fa-circle-nodes me-2"></i>Gestion<span>Canchas</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars text-white" style="font-size: 1.3rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/"><i class="fa-solid fa-house me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/#sports"><i class="fa-solid fa-circle-play me-1"></i> Deportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/#how-it-works"><i class="fa-solid fa-circle-info me-1"></i> Cómo Funciona</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{% url 'dashboard' %}"><i class="fa-solid fa-table-columns me-1"></i> Mi Panel</a>
+                    </li>
+                    {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom text-warning" href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-custom py-2"><i class="fa-solid fa-right-from-bracket me-1"></i> Salir</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a href="{% url 'login' %}" class="btn btn-outline-custom"><i class="fa-solid fa-right-to-bracket me-1"></i> Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a href="{% url 'signup' %}" class="btn btn-glow-primary"><i class="fa-solid fa-user-plus me-1"></i> Registrarse</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 GestionCanchas. Todos los derechos reservados.</p>
+    <!-- Footer -->
+    <footer class="text-center text-lg-start">
+        <div class="container text-center py-2">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-lg-start mb-3 mb-lg-0">
+                    <p class="m-0">&copy; 2026 <strong>GestionCanchas</strong>. Todos los derechos reservados. Diseñado para EAFIT.</p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <div class="d-inline-flex gap-4">
+                        <a href="#"><i class="fa-brands fa-instagram fs-5"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook fs-5"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter fs-5"></i></a>
+                        <a href="#"><i class="fa-solid fa-envelope fs-5"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
 

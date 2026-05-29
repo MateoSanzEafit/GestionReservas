@@ -1,78 +1,267 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Inicio — GestionCanchas{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section Styling */
+    .hero-section {
+        position: relative;
+        padding: 160px 0 100px;
+        background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.12), transparent 40%),
+                    radial-gradient(circle at bottom left, rgba(79, 172, 254, 0.08), transparent 40%);
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-glow-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1.5px;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        line-height: 1.6;
+        margin-bottom: 35px;
+    }
+
+    /* Sport Cards Styling */
+    .sport-card-custom {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glow);
+        border-radius: 24px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        height: 100%;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .sport-card-custom:hover {
+        transform: translateY(-8px) scale(1.02);
+        border-color: var(--primary);
+        box-shadow: 0 20px 40px rgba(0, 242, 254, 0.12);
+    }
+
+    .sport-card-img-wrapper {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .sport-card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .sport-card-custom:hover .sport-card-img-wrapper img {
+        transform: scale(1.08);
+    }
+
+    .sport-card-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #020617;
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border-radius: 50px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .sport-card-content {
+        padding: 30px;
+    }
+
+    .sport-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #fff;
+    }
+
+    .sport-card-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
+    /* Steps Section Styling */
+    .step-number {
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+        margin-bottom: 15px;
+    }
+
+    .step-card {
+        background: rgba(255, 255, 255, 0.015);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 24px;
+        padding: 40px 30px;
+        height: 100%;
+        transition: all 0.3s;
+    }
+
+    .step-card:hover {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<section id="home" class="hero">
-    <div class="container hero-content">
-        <h1>Domina la Cancha</h1>
-        <p>Reserva tu espacio deportivo en segundos. La plataforma más rápida y eficiente para deportistas y complejos.
-        </p>
-        <div class="hero-btns">
-            <a href="#sports" class="btn btn-primary">Explorar Canchas</a>
-            <a href="/admin" class="btn btn-secondary">Gestionar Mi Centro</a>
-        </div>
-    </div>
-</section>
-
-<section id="sports" class="section">
+<!-- Hero Section -->
+<section class="hero-section">
     <div class="container">
-        <div class="section-title">
-            <h2>Nuestras Disciplinas</h2>
-            <p>Selecciona tu deporte favorito y encuentra la cancha perfecta.</p>
-        </div>
-        <div class="sports-grid">
-            <div class="sport-card">
-                <img src="{% static 'reservas/images/sport_football_card.png' %}" alt="Fútbol">
-                <div class="sport-card-content">
-                    <h3>Fútbol</h3>
-                    <p>Gramilla sintética de última generación. Iluminación profesional.</p>
-                    <a href="{% url 'reservar_deporte' 'Fútbol' %}" class="btn btn-primary"
-                        style="margin-top: 15px; width: 100%; text-align: center;">Reservar Ahora</a>
+        <div class="row align-items-center">
+            <div class="col-lg-7 text-center text-lg-start">
+                <div class="badge bg-secondary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-4 fs-6 fw-semibold">
+                    <i class="fa-solid fa-bolt me-1"></i> Reservas Rápidas en Tiempo Real
+                </div>
+                <h1 class="hero-glow-title">Domina la Cancha en Segundos</h1>
+                <p class="hero-subtitle">Reserva los mejores espacios deportivos de tu complejo favorito de forma simple y automática. Sin esperas, sin simulaciones.</p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                    <a href="#sports" class="btn btn-glow-primary btn-lg px-5 py-3"><i class="fa-solid fa-magnifying-glass me-2"></i>Buscar Cancha</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-custom btn-lg px-5 py-3"><i class="fa-solid fa-calendar-check me-2"></i>Mis Reservas</a>
                 </div>
             </div>
-            <div class="sport-card">
-                <img src="{% static 'reservas/images/sport_tennis_card.png' %}" alt="Tenis">
-                <div class="sport-card-content">
-                    <h3>Tenis</h3>
-                    <p>Canchas de polvo de ladrillo y superficie dura certificadas.</p>
-                    <a href="{% url 'reservar_deporte' 'Tenis' %}" class="btn btn-primary"
-                        style="margin-top: 15px; width: 100%; text-align: center;">Reservar Ahora</a>
-                </div>
-            </div>
-            <div class="sport-card">
-                <img src="{% static 'reservas/images/sport_paddle_card.png' %}" alt="Pádel">
-                <div class="sport-card-content">
-                    <h3>Pádel</h3>
-                    <p>Panorámicas de vidrio templado. El deporte que está revolucionando.</p>
-                    <a href="{% url 'reservar_deporte' 'Pádel' %}" class="btn btn-primary"
-                        style="margin-top: 15px; width: 100%; text-align: center;">Reservar Ahora</a>
+            <div class="col-lg-5 d-none d-lg-block">
+                <!-- A futuristic glowing abstract display instead of blank placeholders -->
+                <div class="p-5 bg-card border border-glow rounded-5 position-relative text-center shadow-lg" style="backdrop-filter: blur(20px);">
+                    <div class="position-absolute top-0 start-50 translate-middle badge bg-primary text-dark fw-bold px-3 py-2">
+                        COMPLEJO SEGURO
+                    </div>
+                    <div class="my-4">
+                        <i class="fa-solid fa-award text-warning display-1 my-3"></i>
+                        <h4 class="fw-bold mt-3">Infraestructura Premium</h4>
+                        <p class="text-muted small">Canchas sintéticas y de cristal reglamentarias con iluminación nocturna profesional.</p>
+                    </div>
+                    <div class="border-top border-glow pt-4 mt-4 d-flex justify-content-around text-center">
+                        <div>
+                            <h3 class="fw-extrabold text-primary mb-0">07:00</h3>
+                            <span class="text-muted small">Apertura</span>
+                        </div>
+                        <div class="border-end border-glow"></div>
+                        <div>
+                            <h3 class="fw-extrabold text-primary mb-0">23:00</h3>
+                            <span class="text-muted small">Cierre</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="how-it-works" class="section" style="background: rgba(255,255,255,0.02)">
-    <div class="container">
-        <div class="section-title">
-            <h2>¿Cómo Funciona?</h2>
-            <p>Reserva en tres simples pasos.</p>
+<!-- Sports Grid Section -->
+<section id="sports" class="py-5" style="background: rgba(255,255,255,0.01);">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white mb-3">Nuestras Disciplinas</h2>
+            <p class="text-muted fs-5">Selecciona el deporte que te apasiona y encuentra la cancha ideal.</p>
+            <div class="mx-auto bg-primary rounded-pill mt-3" style="width: 60px; height: 4px;"></div>
         </div>
-        <div class="sports-grid" style="text-align: center;">
-            <div class="step">
-                <h1 style="color: var(--primary); font-size: 4rem;">1</h1>
-                <h3>Elige Deporte</h3>
-                <p>Busca disponibilidad en tiempo real.</p>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Football Card -->
+            <div class="col-md-6 col-lg-4">
+                <div class="sport-card-custom">
+                    <div class="sport-card-img-wrapper">
+                        <span class="sport-card-badge">Más Popular</span>
+                        <img src="{% static 'reservas/images/sport_football_card.png' %}" alt="Fútbol">
+                    </div>
+                    <div class="sport-card-content">
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Fútbol</h3>
+                        <p class="sport-card-desc">Gramilla sintética de última generación para fútbol 5, 8 y 11. Con iluminación nocturna profesional LED.</p>
+                        <a href="{% url 'reservar_deporte' 'Fútbol' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Fútbol</a>
+                    </div>
+                </div>
             </div>
-            <div class="step">
-                <h1 style="color: var(--primary); font-size: 4rem;">2</h1>
-                <h3>Reserva Online</h3>
-                <p>Confirma tu horario y paga de forma segura.</p>
+
+            <!-- Tennis Card -->
+            <div class="col-md-6 col-lg-4">
+                <div class="sport-card-custom">
+                    <div class="sport-card-img-wrapper">
+                        <span class="sport-card-badge bg-info">Precisión</span>
+                        <img src="{% static 'reservas/images/sport_tennis_card.png' %}" alt="Tenis">
+                    </div>
+                    <div class="sport-card-content">
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Tenis</h3>
+                        <p class="sport-card-desc">Canchas profesionales de polvo de ladrillo y superficie dura certificada. Perfecto para singles o dobles.</p>
+                        <a href="{% url 'reservar_deporte' 'Tenis' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Tenis</a>
+                    </div>
+                </div>
             </div>
-            <div class="step">
-                <h1 style="color: var(--primary); font-size: 4rem;">3</h1>
-                <h3>¡A Jugar!</h3>
-                <p>Presenta tu código en el complejo y disfruta.</p>
+
+            <!-- Padel Card -->
+            <div class="col-md-6 col-lg-4">
+                <div class="sport-card-custom">
+                    <div class="sport-card-img-wrapper">
+                        <span class="sport-card-badge bg-warning text-dark">Tendencia</span>
+                        <img src="{% static 'reservas/images/sport_paddle_card.png' %}" alt="Pádel">
+                    </div>
+                    <div class="sport-card-content">
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Pádel</h3>
+                        <p class="sport-card-desc">Canchas panorámicas de vidrio templado. Disfruta de la disciplina que está revolucionando a todo el mundo.</p>
+                        <a href="{% url 'reservar_deporte' 'Pádel' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Pádel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white mb-3">¿Cómo Funciona?</h2>
+            <p class="text-muted fs-5">Reserva tu espacio en tres simples pasos digitales.</p>
+            <div class="mx-auto bg-primary rounded-pill mt-3" style="width: 60px; height: 4px;"></div>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4 class="fw-bold mb-3">Elige tu Cancha</h4>
+                    <p class="text-muted m-0">Selecciona tu disciplina favorita y revisa los horarios disponibles bloqueados en tiempo real mediante nuestra API.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4 class="fw-bold mb-3">Confirma y Paga</h4>
+                    <p class="text-muted m-0">Revisa la tarifa por hora, selecciona tu intervalo y genera tu pago automático. Tu reserva queda registrada de inmediato.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4 class="fw-bold mb-3">¡A Jugar!</h4>
+                    <p class="text-muted m-0">Recibe tu notificación digital al instante, preséntala en la portería del complejo deportivo y ¡disfruta del partido!</p>
+                </div>
             </div>
         </div>
     </div>

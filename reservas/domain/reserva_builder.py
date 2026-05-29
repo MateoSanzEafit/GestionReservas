@@ -50,13 +50,45 @@ class ReservaBuilder:
             raise ValueError("Datos incompletos para crear la reserva.")
 
     def _validar_horario(self):
-        dummy_date = datetime.today().date()
+        from datetime import time, datetime, date
+        from django.utils import timezone
+
+        # 1. Validar hora de inicio posterior a fin
+        dummy_date = date.today()
         start_dt = datetime.combine(dummy_date, self._hora_inicio)
         end_dt = datetime.combine(dummy_date, self._hora_fin)
-        duration_hours = (end_dt - start_dt).total_seconds() / 3600
-        if duration_hours <= 0:
+        duration_minutes = (end_dt - start_dt).total_seconds() / 60
+
+        if duration_minutes <= 0:
             raise ValueError("La hora de fin debe ser posterior a la hora de inicio.")
-        return duration_hours
+
+        # 2. Validar horario de operación (7:00 AM a 11:00 PM) y minutos 00 o 30
+        op_start = time(7, 0)
+        op_end = time(23, 0)
+
+        if not (self._hora_inicio >= op_start and self._hora_fin <= op_end):
+            raise ValueError("La reserva debe realizarse dentro del horario de atención (7:00 AM - 11:00 PM) y en intervalos de 30 minutos.")
+
+        if self._hora_inicio.minute not in [0, 30] or self._hora_fin.minute not in [0, 30]:
+            raise ValueError("La reserva debe realizarse dentro del horario de atención (7:00 AM - 11:00 PM) y en intervalos de 30 minutos.")
+
+        # 3. Validar duración (mínimo 30 minutos, máximo 3 horas)
+        if duration_minutes < 30:
+            raise ValueError("La duración mínima de una reserva es de 30 minutos.")
+        if duration_minutes > 180:
+            raise ValueError("La duración máxima de una reserva es de 3 horas.")
+
+        # 4. Reservas en fechas pasadas y tiempo transcurrido hoy
+        now_local = timezone.localtime(timezone.now())
+        today = now_local.date()
+        current_time = now_local.time()
+
+        if self._fecha < today:
+            raise ValueError("No se permiten reservas en fechas pasadas.")
+        elif self._fecha == today and self._hora_inicio < current_time:
+            raise ValueError("No se permiten reservas en horarios pasados del día de hoy.")
+
+        return duration_minutes / 60.0
 
     def _validar_disponibilidad(self):
         overlapping = Reserva.objects.filter(

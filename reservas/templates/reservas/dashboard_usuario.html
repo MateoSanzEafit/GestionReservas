@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Panel de Usuario - GestionCanchas{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-bg {
+        padding: 50px 0 100px;
+        background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.03), transparent 30%),
+                    radial-gradient(circle at bottom left, rgba(79, 172, 254, 0.03), transparent 30%);
+    }
+
+    .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--border-glow);
+        border-radius: 20px;
+        padding: 25px;
+    }
+
+    .nav-tabs-custom {
+        border-bottom: 1px solid var(--border-glow);
+    }
+
+    .nav-tabs-custom .nav-link {
+        color: var(--text-muted);
+        border: none;
+        background: transparent;
+        padding: 15px 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s;
+        border-bottom: 3px solid transparent;
+    }
+
+    .nav-tabs-custom .nav-link:hover {
+        color: var(--primary);
+    }
+
+    .nav-tabs-custom .nav-link.active {
+        color: var(--primary);
+        background: transparent;
+        border-bottom-color: var(--primary);
+    }
+
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-status.pendiente {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
+    .badge-status.confirmada, .badge-status.pagado {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .badge-status.cancelada, .badge-status.rechazada, .badge-status.rechazado {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .table-custom {
+        vertical-align: middle;
+        color: #fff;
+    }
+
+    .table-custom th {
+        color: var(--text-muted);
+        font-weight: 600;
+        border-bottom-color: var(--border-glow);
+        padding: 16px;
+    }
+
+    .table-custom td {
+        border-bottom-color: rgba(255, 255, 255, 0.03);
+        padding: 16px;
+    }
+
+    .notif-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 20px;
+        transition: all 0.3s;
+    }
+
+    .notif-item:hover {
+        background: rgba(255, 255, 255, 0.01);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-bg">
+    <div class="container">
+        
+        <!-- Welcome banner -->
+        <div class="glass-card mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-8 text-center text-md-start mb-3 mb-md-0">
+                    <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-hand-spock text-primary me-2"></i>¡Hola, {{ request.user.first_name|default:request.user.username }}!</h2>
+                    <p class="text-muted m-0">Gestiona tus canchas, consulta tus pagos y revisa tus partidos programados desde tu panel privado.</p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="/#sports" class="btn btn-glow-primary px-4 py-2 fw-bold">
+                        <i class="fa-solid fa-calendar-plus me-2"></i>Nueva Reserva
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if request.GET.reserva_success %}
+        <div class="alert alert-success alert-dismissible fade show border-0 rounded-4 p-4 shadow-lg mb-4" role="alert" style="background: rgba(40,167,69,0.15); color: #2ecc71;">
+            <div class="d-flex align-items-start gap-3">
+                <i class="fa-solid fa-circle-check fs-2 mt-1"></i>
+                <div>
+                    <h5 class="alert-heading fw-bold mb-1">¡Turno Reservado con Éxito!</h5>
+                    <p class="m-0">Tu reserva con ID <code>{{ request.GET.id }}</code> ha sido guardada en estado <strong>PENDIENTE</strong>. Para confirmarla por completo, un administrador debe aprobar la simulación del pago asociado.</p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: invert(1);"></button>
+        </div>
+        {% endif %}
+
+        <!-- Tabbed Menu -->
+        <div class="glass-card">
+            <ul class="nav nav-tabs nav-tabs-custom mb-4" id="dashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas"
+                        type="button" role="tab" aria-controls="reservas" aria-selected="true">
+                        <i class="fa-solid fa-calendar-check me-2"></i>Reservas Activas
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial"
+                        type="button" role="tab" aria-controls="historial" aria-selected="false">
+                        <i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Turnos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos"
+                        type="button" role="tab" aria-controls="pagos" aria-selected="false">
+                        <i class="fa-solid fa-receipt me-2"></i>Mis Pagos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="notif-tab" data-bs-toggle="tab" data-bs-target="#notif"
+                        type="button" role="tab" aria-controls="notif" aria-selected="false">
+                        <i class="fa-solid fa-bell me-2"></i>Notificaciones
+                        {% if notificaciones %}
+                        <span class="badge bg-danger rounded-circle ms-1" style="font-size: 0.65rem;">{{ notificaciones.count }}</span>
+                        {% endif %}
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="dashboardTabsContent">
+                
+                <!-- Active Reservations Tab -->
+                <div class="tab-pane fade show active" id="reservas" role="tabpanel" aria-labelledby="reservas-tab">
+                    {% if not reservas_activas %}
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-futbol text-muted display-3 mb-3"></i>
+                        <h4 class="fw-bold">No tienes reservas activas</h4>
+                        <p class="text-muted">¿Qué esperas para salir a la cancha? Elige tu deporte y reserva tu bloque ahora.</p>
+                        <a href="/#sports" class="btn btn-outline-custom mt-2"><i class="fa-solid fa-magnifying-glass me-2"></i>Explorar Deportes</a>
+                    </div>
+                    {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>ID Reserva</th>
+                                    <th>Cancha / Deporte</th>
+                                    <th>Fecha</th>
+                                    <th>Horario</th>
+                                    <th>Costo</th>
+                                    <th>Estado</th>
+                                    <th class="text-end">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in reservas_activas %}
+                                <tr id="row-reserva-{{ r.id }}">
+                                    <td><code class="text-info">{{ r.id|slice:":8" }}...</code></td>
+                                    <td>
+                                        <div class="fw-bold text-white">{{ r.cancha.nombre }}</div>
+                                        <span class="badge bg-secondary text-primary border border-primary border-opacity-10 small">{{ r.cancha.tipo }}</span>
+                                    </td>
+                                    <td>{{ r.fecha }}</td>
+                                    <td><i class="fa-solid fa-clock text-primary me-2"></i>{{ r.hora_inicio|time:"H:i" }} - {{ r.hora_fin|time:"H:i" }}</td>
+                                    <td class="fw-bold text-white">${{ r.costo_total }}</td>
+                                    <td>
+                                        <span class="badge-status {{ r.estado|lower }}">{{ r.estado }}</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger px-3 rounded-pill" onclick="cancelarTurno('{{ r.id }}')">
+                                            <i class="fa-solid fa-trash-can me-1"></i> Cancelar
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- History Reservations Tab -->
+                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                    {% if not historial_reservas %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-history display-4 mb-3"></i>
+                        <p class="m-0">Tu historial está vacío. Aún no has completado partidos.</p>
+                    </div>
+                    {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>ID Reserva</th>
+                                    <th>Cancha / Deporte</th>
+                                    <th>Fecha</th>
+                                    <th>Horario</th>
+                                    <th>Costo</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in historial_reservas %}
+                                <tr>
+                                    <td><code class="text-muted">{{ r.id|slice:":8" }}...</code></td>
+                                    <td>
+                                        <div class="fw-bold text-white">{{ r.cancha.nombre }}</div>
+                                        <span class="badge bg-secondary text-muted small">{{ r.cancha.tipo }}</span>
+                                    </td>
+                                    <td>{{ r.fecha }}</td>
+                                    <td>{{ r.hora_inicio|time:"H:i" }} - {{ r.hora_fin|time:"H:i" }}</td>
+                                    <td class="fw-bold">${{ r.costo_total }}</td>
+                                    <td>
+                                        <span class="badge-status {{ r.estado|lower }}">{{ r.estado }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Payments Tab -->
+                <div class="tab-pane fade" id="pagos" role="tabpanel" aria-labelledby="pagos-tab">
+                    {% if not pagos %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-credit-card display-4 mb-3"></i>
+                        <p class="m-0">No se registran transacciones de pago para tu cuenta.</p>
+                    </div>
+                    {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Código Pago</th>
+                                    <th>Costo Reserva</th>
+                                    <th>Cancha</th>
+                                    <th>Método</th>
+                                    <th>Fecha Pago</th>
+                                    <th>Estado de Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in pagos %}
+                                <tr>
+                                    <td><code class="text-info">{{ p.id|slice:":8" }}...</code></td>
+                                    <td class="fw-bold text-white">${{ p.monto }}</td>
+                                    <td>{{ p.reserva.cancha.nombre }}</td>
+                                    <td><span class="badge bg-dark border border-glow text-white text-uppercase px-2 py-1">{{ p.metodo_pago }}</span></td>
+                                    <td>{{ p.fecha_pago|date:"d M Y, h:i A" }}</td>
+                                    <td>
+                                        <span class="badge-status {{ p.estado|lower }}">{{ p.estado }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Notifications Tab -->
+                <div class="tab-pane fade" id="notif" role="tabpanel" aria-labelledby="notif-tab">
+                    {% if not notificaciones %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-bell-slash display-4 mb-3"></i>
+                        <p class="m-0">No tienes notificaciones en tu bandeja de entrada.</p>
+                    </div>
+                    {% else %}
+                    <div class="d-flex flex-column rounded-3 overflow-hidden border border-glow">
+                        {% for n in notificaciones %}
+                        <div class="notif-item">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-secondary text-primary border border-primary border-opacity-10 text-uppercase fw-bold" style="font-size: 0.65rem;">
+                                    <i class="fa-solid fa-envelope me-1"></i> {{ n.tipo }}
+                                </span>
+                                <span class="small text-muted">{{ n.fecha_envio|date:"d M, h:i A" }}</span>
+                            </div>
+                            <p class="text-white m-0" style="font-size: 0.95rem;">{{ n.mensaje }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    function cancelarTurno(reservaId) {
+        if (!confirm('¿Estás completamente seguro de que deseas cancelar este turno deportivo?')) return;
+
+        // AJAX Request to cancel
+        const csrfToken = '{{ csrf_token }}';
+        
+        fetch(`/dashboard/cancelar/${reservaId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('La reserva ha sido cancelada correctamente.');
+                window.location.reload();
+            } else {
+                alert('Error al cancelar: ' + (data.error || 'Intente de nuevo.'));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Ocurrió un error inesperado al procesar la cancelación.');
+        });
+    }
+</script>
+{% endblock %}
+{% endblock %}

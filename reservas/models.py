@@ -12,13 +12,16 @@ class Usuario(models.Model):
 
 class Cancha(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
+    nombre = models.CharField(max_length=100, default='Cancha Deportiva')
     tipo = models.CharField(max_length=50) # e.g., Futbol, Tenis
     ubicacion = models.CharField(max_length=100)
+    descripcion = models.TextField(null=True, blank=True, default='')
+    imagen = models.CharField(max_length=200, default='reservas/images/sport_football_card.png')
     tarifa_por_hora = models.DecimalField(max_digits=10, decimal_places=2)
     estado_disponibilidad = models.CharField(max_length=20, default='DISPONIBLE')
 
     def __str__(self):
-        return f"{self.tipo} - {self.ubicacion}"
+        return f"{self.nombre} ({self.tipo})"
 
 class Reserva(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
