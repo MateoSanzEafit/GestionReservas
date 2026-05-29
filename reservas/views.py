@@ -31,7 +31,8 @@ class SignUpView(generic.CreateView):
             id=username,
             defaults={
                 'nombre': username,
-                'correo_electronico': f"{username}@example.com"
+                'correo_electronico': f"{username}@example.com",
+                'rol': Usuario.Rol.NORMAL,
             }
         )
         return response
@@ -61,7 +62,8 @@ class CrearReservaView(LoginRequiredMixin, View):
                 id=usuario_id,
                 defaults={
                     'nombre': usuario_id,
-                    'correo_electronico': request.user.email or f"{usuario_id}@example.com"
+                    'correo_electronico': request.user.email or f"{usuario_id}@example.com",
+                    'rol': Usuario.Rol.ADMIN if request.user.is_staff else Usuario.Rol.NORMAL,
                 }
             )
 
@@ -88,7 +90,7 @@ class DisponibilidadAPIView(View):
             reservas = Reserva.objects.filter(
                 cancha_id=cancha_id,
                 fecha=fecha,
-                estado__in=["PENDIENTE", "CONFIRMADA"]
+                estado__in=[Reserva.Estado.PENDIENTE, Reserva.Estado.CONFIRMADA]
             ).order_by("hora_inicio")
             
             ocupados = []
@@ -109,7 +111,8 @@ class UserDashboardView(LoginRequiredMixin, View):
             id=usuario_id,
             defaults={
                 'nombre': usuario_id,
-                'correo_electronico': request.user.email or f"{usuario_id}@example.com"
+                'correo_electronico': request.user.email or f"{usuario_id}@example.com",
+                'rol': Usuario.Rol.ADMIN if request.user.is_staff else Usuario.Rol.NORMAL,
             }
         )
         
@@ -163,7 +166,7 @@ class CancelarReservaView(LoginRequiredMixin, View):
 
 
 class AdminDashboardView(LoginRequiredMixin, View):
-    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/login/"))
+    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/accounts/login/"))
     def get(self, request):
         from django.db.models import Sum
         
@@ -171,7 +174,7 @@ class AdminDashboardView(LoginRequiredMixin, View):
         total_usuarios = Usuario.objects.count()
         total_canchas = Cancha.objects.count()
         total_reservas = Reserva.objects.count()
-        total_pagado = Pago.objects.filter(estado="PAGADO").aggregate(total=Sum("monto"))["total"] or 0
+        total_pagado = Pago.objects.filter(estado=Pago.EstadoPago.PAGADO).aggregate(total=Sum("monto"))["total"] or 0
         
         # Listados
         usuarios = Usuario.objects.all()
@@ -192,7 +195,7 @@ class AdminDashboardView(LoginRequiredMixin, View):
 
 
 class ProcesarPagoView(LoginRequiredMixin, View):
-    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/login/"))
+    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/accounts/login/"))
     def post(self, request, pago_id, accion):
         try:
             s = ReservaService()
@@ -213,7 +216,7 @@ class ProcesarPagoView(LoginRequiredMixin, View):
 
 
 class CanchaCreateView(LoginRequiredMixin, View):
-    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/login/"))
+    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/accounts/login/"))
     def post(self, request):
         try:
             cancha_id = request.POST["id"]
@@ -244,7 +247,7 @@ class CanchaCreateView(LoginRequiredMixin, View):
 
 
 class CanchaDeleteView(LoginRequiredMixin, View):
-    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/login/"))
+    @method_decorator(user_passes_test(lambda u: u.is_staff, login_url="/accounts/login/"))
     def post(self, request, cancha_id):
         try:
             cancha = Cancha.objects.get(id=cancha_id)
