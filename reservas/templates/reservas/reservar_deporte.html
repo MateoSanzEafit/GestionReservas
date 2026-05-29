@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Reservar {{ deporte }} - GestionCanchas{% endblock %}
+{% block title %}{% blocktrans %}Reservar {{ deporte_label }}{% endblocktrans %} - GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -113,25 +113,42 @@
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
                 <div>
-                    <span class="badge bg-primary text-dark fw-extrabold text-uppercase px-3 py-1 mb-1">{{ deporte }}</span>
-                    <h2 class="fw-bold m-0 text-white">Reserva tu Turno</h2>
+                    <span class="badge bg-primary text-dark fw-extrabold text-uppercase px-3 py-1 mb-1">{{ deporte_label }}</span>
+                    <h2 class="fw-bold m-0 text-white">{% trans "Reserva tu Turno" %}</h2>
                 </div>
             </div>
+
+            {% if weather_forecast %}
+            <div class="alert alert-info border-0 rounded-4 mb-4" style="background: rgba(0, 242, 254, 0.08); color: #dffcff;">
+                <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-md-center">
+                    <div>
+                        <h5 class="fw-bold mb-1"><i class="fa-solid fa-cloud-sun me-2"></i>{% blocktrans %}Clima estimado para {{ deporte_label }}{% endblocktrans %}</h5>
+                        <p class="m-0">{{ weather_forecast.condition }} | {{ weather_forecast.temperature_c }}°C | {% trans "Prob. lluvia" %} {{ weather_forecast.rain_probability }}%</p>
+                    </div>
+                    <div class="small text-white-50">
+                        {{ weather_forecast.recommendation }}
+                        {% if weather_forecast.error_message %}
+                        <br><span class="text-warning">{% trans "Fuente simulada:" %} {{ weather_forecast.error_message }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
             {% if not user.is_authenticated %}
             <div class="text-center py-5">
                 <i class="fa-solid fa-lock text-muted display-4 mb-3"></i>
-                <h4 class="fw-bold">Acceso Autenticado</h4>
-                <p class="text-muted">Debes iniciar sesión con tu cuenta para poder consultar disponibilidad y reservar canchas.</p>
+                <h4 class="fw-bold">{% trans "Acceso Autenticado" %}</h4>
+                <p class="text-muted">{% trans "Debes iniciar sesión con tu cuenta para poder consultar disponibilidad y reservar canchas." %}</p>
                 <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-glow-primary px-5 py-3 mt-3">
-                    <i class="fa-solid fa-right-to-bracket me-2"></i>Iniciar Sesión
+                    <i class="fa-solid fa-right-to-bracket me-2"></i>{% trans "Iniciar Sesión" %}
                 </a>
             </div>
             {% elif not canchas %}
             <div class="text-center py-5">
                 <i class="fa-solid fa-triangle-exclamation text-warning display-4 mb-3"></i>
-                <h4 class="fw-bold">Sin Canchas Disponibles</h4>
-                <p class="text-muted">Lo sentimos, no hay canchas de {{ deporte }} activas en el complejo en este momento.</p>
+                <h4 class="fw-bold">{% trans "Sin Canchas Disponibles" %}</h4>
+                <p class="text-muted">{% blocktrans %}Lo sentimos, no hay canchas de {{ deporte_label }} activas en el complejo en este momento.{% endblocktrans %}</p>
             </div>
             {% else %}
             <form action="{% url 'crear_reserva' %}" method="post" id="booking-form">
@@ -139,7 +156,7 @@
 
                 <!-- Step 1: Court selection -->
                 <div class="mb-4">
-                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-1 text-primary me-2"></i>1. Selecciona la Cancha</h5>
+                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-1 text-primary me-2"></i>{% trans "1. Selecciona la Cancha" %}</h5>
                     <div class="row g-3">
                         {% for cancha in canchas %}
                         <div class="col-md-6 col-lg-4">
@@ -159,7 +176,7 @@
 
                 <!-- Step 2: Date Selector -->
                 <div class="mb-4">
-                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-2 text-primary me-2"></i>2. Elige la Fecha</h5>
+                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-2 text-primary me-2"></i>{% trans "2. Elige la Fecha" %}</h5>
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
                             <input type="date" name="fecha" id="fecha" class="form-control bg-dark border border-glow text-white py-3 px-4 rounded-3" 
@@ -170,8 +187,8 @@
 
                 <!-- Step 3: Slots grid -->
                 <div class="mb-4" id="slots-section" style="display:none;">
-                    <h5 class="fw-bold text-white mb-2"><i class="fa-solid fa-circle-3 text-primary me-2"></i>3. Selecciona la Hora de Inicio</h5>
-                    <p class="text-muted small mb-3">Las reservas se dividen en bloques fijos de 30 minutos. Selecciona tu hora de inicio:</p>
+                    <h5 class="fw-bold text-white mb-2"><i class="fa-solid fa-circle-3 text-primary me-2"></i>{% trans "3. Selecciona la Hora de Inicio" %}</h5>
+                    <p class="text-muted small mb-3">{% trans "Las reservas se dividen en bloques fijos de 30 minutos. Selecciona tu hora de inicio:" %}</p>
                     
                     <div class="slots-grid" id="slots-container">
                         <!-- Loaded dynamically via JS -->
@@ -180,23 +197,23 @@
 
                 <!-- Step 4: Duration Selector -->
                 <div class="mb-5" id="duration-section" style="display:none;">
-                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-4 text-primary me-2"></i>4. Define la Duración</h5>
+                    <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-4 text-primary me-2"></i>{% trans "4. Define la Duración" %}</h5>
                     <div class="row g-3 align-items-center">
                         <div class="col-md-5 col-lg-4">
                             <select name="duracion" id="duracion" class="form-select bg-dark border border-glow text-white py-3 px-4 rounded-3" 
                                     onchange="calculateEndTime()" required>
-                                <option value="0.5">30 Minutos</option>
-                                <option value="1.0" selected>1 Hora</option>
-                                <option value="1.5">1.5 Horas</option>
-                                <option value="2.0">2 Horas</option>
-                                <option value="2.5">2.5 Horas</option>
-                                <option value="3.0">3 Horas (Máximo)</option>
+                                <option value="0.5">{% trans "30 Minutos" %}</option>
+                                <option value="1.0" selected>{% trans "1 Hora" %}</option>
+                                <option value="1.5">{% trans "1.5 Horas" %}</option>
+                                <option value="2.0">{% trans "2 Horas" %}</option>
+                                <option value="2.5">{% trans "2.5 Horas" %}</option>
+                                <option value="3.0">{% trans "3 Horas (Máximo)" %}</option>
                             </select>
                         </div>
                         <div class="col-md-7">
                             <div class="p-3 bg-secondary bg-opacity-10 border border-glow rounded-3 text-muted small">
-                                <span class="d-block text-white fw-bold"><i class="fa-solid fa-info-circle me-1"></i> Resumen de Selección:</span>
-                                <span id="summary-text">Selecciona un bloque de tiempo para calcular costos y horarios.</span>
+                                <span class="d-block text-white fw-bold"><i class="fa-solid fa-info-circle me-1"></i> {% trans "Resumen de Selección:" %}</span>
+                                <span id="summary-text">{% trans "Selecciona un bloque de tiempo para calcular costos y horarios." %}</span>
                             </div>
                         </div>
                     </div>
@@ -209,7 +226,7 @@
                 <div id="alert-error" class="alert alert-danger d-none py-3" role="alert"></div>
 
                 <button type="submit" class="btn btn-glow-primary btn-lg w-100 py-3 fw-bold" id="submit-booking-btn" style="display:none;">
-                    <i class="fa-solid fa-check-double me-2"></i>Confirmar Reserva Deportiva
+                    <i class="fa-solid fa-check-double me-2"></i>{% trans "Confirmar Reserva Deportiva" %}
                 </button>
             </form>
             {% endif %}
@@ -219,12 +236,12 @@
 
 {% block extra_js %}
 <script>
-    let selectedCourt = null;
-    let occupiedSlots = [];
-    let selectedTimeStr = null;
+    var selectedCourt = null;
+    var occupiedSlots = [];
+    var selectedTimeStr = null;
 
     // Horarios de operacion de 07:00 a 23:00
-    const opHours = [];
+    var opHours = [];
     for (let h = 7; h <= 22; h++) {
         let hourStr = h < 10 ? '0' + h : '' + h;
         opHours.push(hourStr + ':00');
@@ -254,7 +271,7 @@
 
         // Mostrar cargando
         const container = document.getElementById('slots-container');
-        container.innerHTML = '<div class="text-primary small my-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando disponibilidad...</div>';
+                container.innerHTML = '<div class="text-primary small my-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>{% trans "Cargando disponibilidad..." %}</div>';
         document.getElementById('slots-section').style.display = 'block';
         document.getElementById('duration-section').style.display = 'none';
         document.getElementById('submit-booking-btn').style.display = 'none';
@@ -265,7 +282,7 @@
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    container.innerHTML = `<div class="text-danger small py-2"><i class="fa-solid fa-triangle-exclamation me-1"></i>Error: ${data.error}</div>`;
+                    container.innerHTML = `<div class="text-danger small py-2"><i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "Error:" %} ${data.error}</div>`;
                     return;
                 }
                 
@@ -274,7 +291,7 @@
             })
             .catch(err => {
                 console.error(err);
-                container.innerHTML = `<div class="text-danger small py-2"><i class="fa-solid fa-triangle-exclamation me-1"></i>Error cargando datos.</div>`;
+                container.innerHTML = `<div class="text-danger small py-2"><i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "Error cargando datos." %}</div>`;
             });
     }
 
@@ -325,7 +342,7 @@
                 btn.disabled = true;
             } else if (isOccupied) {
                 btn.classList.add('occupied');
-                btn.innerHTML += '<span class="slot-badge-occupied">Ocupado</span>';
+                btn.innerHTML += '<span class="slot-badge-occupied">{% trans "Ocupado" %}</span>';
                 btn.disabled = true;
             } else {
                 btn.onclick = () => selectSlot(timeStr, btn);
@@ -392,61 +409,64 @@
         submitBtn.disabled = false;
 
         if (hasConflict) {
-            errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>¡Conflicto detectado! La duración seleccionada se solapa con una reserva ocupada.';
+            errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "¡Conflicto detectado! La duración seleccionada se solapa con una reserva ocupada." %}';
             errorDiv.classList.remove('d-none');
             submitBtn.disabled = true;
-            summaryText.innerHTML = `<span class="text-danger fw-bold">Horario no disponible</span>`;
+            summaryText.innerHTML = `<span class="text-danger fw-bold">{% trans "Horario no disponible" %}</span>`;
         } else if (goesBeyondLimit) {
-            errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>La reserva excede el horario de cierre del complejo (11:00 PM).';
+            errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "La reserva excede el horario de cierre del complejo (11:00 PM)." %}';
             errorDiv.classList.remove('d-none');
             submitBtn.disabled = true;
-            summaryText.innerHTML = `<span class="text-danger fw-bold">Supera horario de atención</span>`;
+            summaryText.innerHTML = `<span class="text-danger fw-bold">{% trans "Supera horario de atención" %}</span>`;
         } else {
             summaryText.innerHTML = `Reservas de <strong>${selectedTimeStr}</strong> a <strong>${endHourStr}</strong> (${duration} hora/s de juego).`;
         }
     }
 
     // Ajax Form Submission for premium UX
-    document.getElementById('booking-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const errorDiv = document.getElementById('alert-error');
-        errorDiv.classList.add('d-none');
-        
-        const submitBtn = document.getElementById('submit-booking-btn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i>Procesando Reserva...';
-        submitBtn.disabled = true;
+    var bookingForm = document.getElementById('booking-form');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        const formData = new FormData(this);
+            const errorDiv = document.getElementById('alert-error');
+            errorDiv.classList.add('d-none');
 
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.reserva_id) {
-                // Redirect immediately to user dashboard to see their pending reservation and pay
-                window.location.href = '/dashboard/?reserva_success=1&id=' + data.reserva_id;
-            } else {
-                errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>Error Backend: ' + (data.error || 'Ocurrió un error inesperado.');
+            const submitBtn = document.getElementById('submit-booking-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i>{% trans "Procesando Reserva..." %}';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reserva_id) {
+                    // Redirect immediately to user dashboard to see their pending reservation and pay
+                    window.location.href = '/dashboard/?reserva_success=1&id=' + data.reserva_id;
+                } else {
+                    errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "Error Backend:" %} ' + (data.error || '{% trans "Ocurrió un error inesperado." %}');
+                    errorDiv.classList.remove('d-none');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('{% trans "Error:" %}', error);
+                errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>{% trans "Ocurrió un error al enviar los datos. Intente de nuevo." %}';
                 errorDiv.classList.remove('d-none');
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i>Ocurrió un error al enviar los datos. Intente de nuevo.';
-            errorDiv.classList.remove('d-none');
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            });
         });
-    });
+    }
 </script>
 {% endblock %}
 {% endblock %}

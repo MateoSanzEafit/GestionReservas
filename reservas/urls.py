@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("canchas/fut1/", views.fut1_redirect, name="fut1_redirect"),
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path("reservar/<str:deporte>/", views.ReservaDeporteView.as_view(), name="reservar_deporte"),
     path("reservas/crear/", views.CrearReservaView.as_view(), name="crear_reserva"),
@@ -19,4 +20,5 @@ urlpatterns = [
     
     # API JSON
     path("api/disponibilidad/", views.DisponibilidadAPIView.as_view(), name="api_disponibilidad"),
+    path("api/system/summary/", views.system_summary_api, name="system_summary_api"),
 ]

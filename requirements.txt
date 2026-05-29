@@ -1,3 +1,6 @@
 django>=4.0
 requests
 gunicorn
+psycopg2-binary
+celery
+redis

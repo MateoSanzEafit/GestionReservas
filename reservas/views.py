@@ -9,13 +9,34 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
 
 from .models import Cancha, Usuario, Reserva, Pago
 from .services import ReservaService, check_availability
+from .integrations.allied_team import AlliedTeamService
+from .integrations.weather_adapter import WeatherAdapter
 
 
 def index(request):
     return render(request, "reservas/index.html")
+
+
+def fut1_redirect(request):
+    return redirect("reservar_deporte", deporte="Fútbol")
+
+
+def system_summary_api(request):
+    resumen = {
+        "total_usuarios": Usuario.objects.count(),
+        "total_canchas": Cancha.objects.count(),
+        "total_reservas": Reserva.objects.count(),
+        "total_pagos": Pago.objects.count(),
+        "reservas_confirmadas": Reserva.objects.filter(estado=Reserva.Estado.CONFIRMADA).count(),
+        "reservas_pendientes": Reserva.objects.filter(estado=Reserva.Estado.PENDIENTE).count(),
+        "reservas_canceladas": Reserva.objects.filter(estado=Reserva.Estado.CANCELADA).count(),
+    }
+
+    return JsonResponse(resumen)
 
 
 class SignUpView(generic.CreateView):
@@ -40,13 +61,21 @@ class SignUpView(generic.CreateView):
 
 class ReservaDeporteView(View):
     def get(self, request, deporte):
+        deporte_label = {
+            "Fútbol": _("Fútbol"),
+            "Tenis": _("Tenis"),
+            "Pádel": _("Pádel"),
+        }.get(deporte, deporte)
         # Filtramos canchas disponibles por deporte
         canchas = Cancha.objects.filter(tipo__iexact=deporte, estado_disponibilidad='DISPONIBLE')
         today_str = date.today().isoformat()
+        weather_forecast = WeatherAdapter().get_forecast(deporte, today_str)
         return render(request, "reservas/reservar_deporte.html", {
             "deporte": deporte,
+            "deporte_label": deporte_label,
             "canchas": canchas,
-            "today": today_str
+            "today": today_str,
+            "weather_forecast": weather_forecast,
         })
 
 
@@ -137,6 +166,8 @@ class UserDashboardView(LoginRequiredMixin, View):
         
         # Notificaciones
         notificaciones = usuario.notificaciones.all().order_by("-fecha_envio")
+
+        allied_team_info = AlliedTeamService().fetch_summary()
         
         return render(request, "reservas/dashboard_usuario.html", {
             "reservas_activas": reservas_activas,
@@ -144,6 +175,7 @@ class UserDashboardView(LoginRequiredMixin, View):
             "pagos": pagos,
             "notificaciones": notificaciones,
             "usuario": usuario
+            ,"allied_team_info": allied_team_info
         })
 
 

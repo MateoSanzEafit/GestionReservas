@@ -1,0 +1,564 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GestionReservas 1.0\n"
+"POT-Creation-Date: 2026-05-28 00:00+0000\n"
+"PO-Revision-Date: 2026-05-28 00:00+0000\n"
+"Last-Translator: Copilot <noreply@example.com>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Inicio"
+msgstr "Home"
+
+msgid "Deportes"
+msgstr "Sports"
+
+msgid "Cómo Funciona"
+msgstr "How It Works"
+
+msgid "Mi Panel"
+msgstr "My Dashboard"
+
+msgid "Admin Panel"
+msgstr "Admin Panel"
+
+msgid "Salir"
+msgstr "Sign Out"
+
+msgid "Iniciar Sesión"
+msgstr "Sign In"
+
+msgid "Registrarse"
+msgstr "Register"
+
+msgid "Todos los derechos reservados. Diseñado para EAFIT."
+msgstr "All rights reserved. Designed for EAFIT."
+
+msgid "Ingreso"
+msgstr "Login"
+
+msgid "Ingresa tus credenciales para acceder a tu panel."
+msgstr "Enter your credentials to access your dashboard."
+
+msgid "Usuario o contraseña incorrectos."
+msgstr "Incorrect username or password."
+
+msgid "Nombre de Usuario"
+msgstr "Username"
+
+msgid "Tu usuario"
+msgstr "Your username"
+
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "¿No tienes cuenta?"
+msgstr "Don't have an account?"
+
+msgid "Regístrate aquí"
+msgstr "Register here"
+
+msgid "Registrarse"
+msgstr "Register"
+
+msgid "Registro"
+msgstr "Sign Up"
+
+msgid "Crea tu cuenta de deportista para comenzar."
+msgstr "Create your athlete account to get started."
+
+msgid "Registrar Cuenta"
+msgstr "Create Account"
+
+msgid "¿Ya tienes cuenta?"
+msgstr "Already have an account?"
+
+msgid "Inicia sesión"
+msgstr "Sign in"
+
+msgid "Panel de Control Administrativo"
+msgstr "Administrative Control Panel"
+
+msgid "Módulo de Administración"
+msgstr "Administration Module"
+
+msgid "Panel Administrativo"
+msgstr "Admin Dashboard"
+
+msgid "Control global de usuarios, canchas, reservas y flujos de pago del complejo deportivo."
+msgstr "Global control of users, courts, reservations, and payment flows for the sports complex."
+
+msgid "Añadir Cancha"
+msgstr "Add Court"
+
+msgid "Total Usuarios"
+msgstr "Total Users"
+
+msgid "Canchas Activas"
+msgstr "Active Courts"
+
+msgid "Reservas Registradas"
+msgstr "Registered Reservations"
+
+msgid "Ingresos Totales"
+msgstr "Total Revenue"
+
+msgid "Canchas"
+msgstr "Courts"
+
+msgid "Procesar Pagos"
+msgstr "Process Payments"
+
+msgid "Reservas"
+msgstr "Reservations"
+
+msgid "Usuarios"
+msgstr "Users"
+
+msgid "Reserva tu Turno"
+msgstr "Book Your Slot"
+
+msgid "Acceso Autenticado"
+msgstr "Authenticated Access"
+
+msgid "Debes iniciar sesión con tu cuenta para poder consultar disponibilidad y reservar canchas."
+msgstr "You must sign in with your account to check availability and book courts."
+
+msgid "Sin Canchas Disponibles"
+msgstr "No Courts Available"
+
+msgid "1. Selecciona la Cancha"
+msgstr "1. Select the Court"
+
+msgid "2. Elige la Fecha"
+msgstr "2. Choose the Date"
+
+msgid "3. Selecciona la Hora de Inicio"
+msgstr "3. Select the Start Time"
+
+msgid "Las reservas se dividen en bloques fijos de 30 minutos. Selecciona tu hora de inicio:"
+msgstr "Reservations are divided into fixed 30-minute blocks. Select your start time:"
+
+msgid "4. Define la Duración"
+msgstr "4. Set the Duration"
+
+msgid "30 Minutos"
+msgstr "30 Minutes"
+
+msgid "1 Hora"
+msgstr "1 Hour"
+
+msgid "1.5 Horas"
+msgstr "1.5 Hours"
+
+msgid "2 Horas"
+msgstr "2 Hours"
+
+msgid "2.5 Horas"
+msgstr "2.5 Hours"
+
+msgid "3 Horas (Máximo)"
+msgstr "3 Hours (Max)"
+
+msgid "Resumen de Selección:"
+msgstr "Selection Summary:"
+
+msgid "Selecciona un bloque de tiempo para calcular costos y horarios."
+msgstr "Select a time slot to calculate costs and times."
+
+msgid "Confirmar Reserva Deportiva"
+msgstr "Confirm Sports Reservation"
+
+msgid "Cargando disponibilidad..."
+msgstr "Loading availability..."
+
+msgid "Error:"
+msgstr "Error:"
+
+msgid "Error cargando datos."
+msgstr "Error loading data."
+
+msgid "Mi Panel de Usuario"
+msgstr "My User Dashboard"
+
+msgid "Gestiona tus canchas, consulta tus pagos y revisa tus partidos programados desde tu panel privado."
+msgstr "Manage your courts, review your payments, and check your scheduled matches from your private dashboard."
+
+msgid "Nueva Reserva"
+msgstr "New Reservation"
+
+msgid "Información del equipo aliado"
+msgstr "Allied Team Information"
+
+msgid "Disponible"
+msgstr "Available"
+
+msgid "No disponible"
+msgstr "Not available"
+
+msgid "Reservas Rápidas en Tiempo Real"
+msgstr "Fast Real-Time Bookings"
+
+msgid "Domina la Cancha en Segundos"
+msgstr "Own the Court in Seconds"
+
+msgid "Reserva los mejores espacios deportivos de tu complejo favorito de forma simple y automática. Sin esperas, sin simulaciones."
+msgstr "Book the best sports spaces at your favorite complex simply and automatically. No waiting, no mockups."
+
+msgid "Buscar Cancha"
+msgstr "Find a Court"
+
+msgid "Mis Reservas"
+msgstr "My Reservations"
+
+msgid "Canchas sintéticas y de cristal reglamentarias con iluminación nocturna profesional."
+msgstr "Regulation synthetic and glass courts with professional night lighting."
+
+msgid "Nuestras Disciplinas"
+msgstr "Our Sports"
+
+msgid "Selecciona el deporte que te apasiona y encuentra la cancha ideal."
+msgstr "Select the sport you love and find the ideal court."
+
+msgid "Fútbol"
+msgstr "Soccer"
+
+msgid "Gramilla sintética de última generación para fútbol 5, 8 y 11. Con iluminación nocturna profesional LED."
+msgstr "Next-generation synthetic turf for 5-, 8- and 11-a-side soccer, with professional LED night lighting."
+
+msgid "Reservar Fútbol"
+msgstr "Book Soccer"
+
+msgid "Tenis"
+msgstr "Tennis"
+
+msgid "Canchas profesionales de polvo de ladrillo y superficie dura certificada. Perfecto para singles o dobles."
+msgstr "Professional clay and certified hard courts. Perfect for singles or doubles."
+
+msgid "Reservar Tenis"
+msgstr "Book Tennis"
+
+msgid "Pádel"
+msgstr "Padel"
+
+msgid "Canchas panorámicas de vidrio templado. Disfruta de la disciplina que está revolucionando a todo el mundo."
+msgstr "Panoramic tempered-glass courts. Enjoy the sport that's taking the world by storm."
+
+msgid "Reservar Pádel"
+msgstr "Book Padel"
+
+msgid "¿Cómo Funciona?"
+msgstr "How It Works?"
+
+msgid "Reserva tu espacio en tres simples pasos digitales."
+msgstr "Reserve your space in three simple digital steps."
+
+msgid "Elige tu Cancha"
+msgstr "Choose Your Court"
+
+msgid "Selecciona tu disciplina favorita y revisa los horarios disponibles bloqueados en tiempo real mediante nuestra API."
+msgstr "Select your favorite sport and review available time slots locked in real time through our API."
+
+msgid "Confirma y Paga"
+msgstr "Confirm and Pay"
+
+msgid "Revisa la tarifa por hora, selecciona tu intervalo y genera tu pago automático. Tu reserva queda registrada de inmediato."
+msgstr "Review the hourly rate, choose your interval, and generate your automatic payment. Your reservation is registered immediately."
+
+msgid "¡A Jugar!"
+msgstr "Let's Play!"
+
+msgid "Recibe tu notificación digital al instante, preséntala en la portería del complejo deportivo y ¡disfruta del partido!"
+msgstr "Receive your digital notification instantly, show it at the sports complex gate, and enjoy the match!"
+
+msgid "¡Turno Reservado con Éxito!"
+msgstr "Reservation Successful!"
+
+msgid "Tu reserva con ID %(reserva_id)s ha sido guardada en estado <strong>PENDIENTE</strong>. Para confirmarla por completo, un administrador debe aprobar la simulación del pago asociado."
+msgstr "Your reservation with ID %(reserva_id)s has been saved with <strong>PENDING</strong> status. To fully confirm it, an administrator must approve the associated simulated payment."
+
+msgid "Reservas Activas"
+msgstr "Active Reservations"
+
+msgid "Historial de Turnos"
+msgstr "Slot History"
+
+msgid "Mis Pagos"
+msgstr "My Payments"
+
+msgid "Notificaciones"
+msgstr "Notifications"
+
+msgid "No tienes reservas activas"
+msgstr "You have no active reservations"
+
+msgid "¿Qué esperas para salir a la cancha? Elige tu deporte y reserva tu bloque ahora."
+msgstr "What are you waiting for? Choose your sport and book your slot now."
+
+msgid "Explorar Deportes"
+msgstr "Explore Sports"
+
+msgid "ID Reserva"
+msgstr "Reservation ID"
+
+msgid "Cancha / Deporte"
+msgstr "Court / Sport"
+
+msgid "Fecha"
+msgstr "Date"
+
+msgid "Horario"
+msgstr "Time"
+
+msgid "Costo"
+msgstr "Cost"
+
+msgid "Estado"
+msgstr "Status"
+
+msgid "Acción"
+msgstr "Action"
+
+msgid "Cancelar"
+msgstr "Cancel"
+
+msgid "Tu historial está vacío. Aún no has completado partidos."
+msgstr "Your history is empty. You have not completed any matches yet."
+
+msgid "No se registran transacciones de pago para tu cuenta."
+msgstr "There are no payment transactions registered for your account."
+
+msgid "Código Pago"
+msgstr "Payment Code"
+
+msgid "Costo Reserva"
+msgstr "Reservation Cost"
+
+msgid "Español"
+msgstr "Spanish"
+
+msgid "Inglés"
+msgstr "English"
+
+msgid "GestionCanchas — Reserva tu Espacio Deportivo"
+msgstr "GestionCanchas - Book Your Sports Space"
+
+msgid "Integración Externa"
+msgstr "External Integration"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Cancha Deportiva"
+msgstr "Sport Court"
+
+msgid "Tipo de Deporte"
+msgstr "Sport Type"
+
+msgid "Ubicación"
+msgstr "Location"
+
+msgid "Tarifa por Hora"
+msgstr "Hourly Rate"
+
+msgid "Acciones"
+msgstr "Actions"
+
+msgid "Eliminar"
+msgstr "Delete"
+
+msgid "ID Pago"
+msgstr "Payment ID"
+
+msgid "Monto"
+msgstr "Amount"
+
+msgid "Simular Aprobación"
+msgstr "Simulate Approval"
+
+msgid "Aprobar"
+msgstr "Approve"
+
+msgid "Rechazar"
+msgstr "Reject"
+
+msgid "Procesado"
+msgstr "Processed"
+
+msgid "Username (ID)"
+msgstr "Username (ID)"
+
+msgid "Nombre del Usuario"
+msgstr "User Name"
+
+msgid "Correo Electrónico"
+msgstr "Email"
+
+msgid "Fecha Registro"
+msgstr "Registration Date"
+
+msgid "Añadir Nueva Cancha"
+msgstr "Add New Court"
+
+msgid "ID Cancha (Único)"
+msgstr "Court ID (Unique)"
+
+msgid "ej. fut3"
+msgstr "e.g. fut3"
+
+msgid "Deporte"
+msgstr "Sport"
+
+msgid "Nombre de la Cancha"
+msgstr "Court Name"
+
+msgid "ej. Cancha Sintética 3"
+msgstr "e.g. Synthetic Court 3"
+
+msgid "ej. Sector Norte, junto a Cafetería"
+msgstr "e.g. North Sector, next to the cafeteria"
+
+msgid "Tarifa por Hora ($)"
+msgstr "Hourly Rate ($)"
+
+msgid "Imagen URL (Opcional)"
+msgstr "Image URL (Optional)"
+
+msgid "Descripción detallada"
+msgstr "Detailed description"
+
+msgid "Gramado sintético FIFA Preferred, techada y con iluminación artificial..."
+msgstr "FIFA Preferred synthetic turf, covered and with artificial lighting..."
+
+msgid "Crear Cancha"
+msgstr "Create Court"
+
+msgid "¿Estás seguro de que deseas eliminar permanentemente esta cancha del complejo deportivo?"
+msgstr "Are you sure you want to permanently delete this court from the sports complex?"
+
+msgid "Cancha eliminada con éxito."
+msgstr "Court deleted successfully."
+
+msgid "Error al eliminar:"
+msgstr "Error deleting:"
+
+msgid "Ocurrió un error inesperado al eliminar la cancha."
+msgstr "An unexpected error occurred while deleting the court."
+
+msgid "¿Deseas"
+msgstr "Do you want to"
+
+msgid "este pago de reserva?"
+msgstr "this reservation payment?"
+
+msgid "Pago"
+msgstr "Payment"
+
+msgid "exitosamente."
+msgstr "successfully."
+
+msgid "Error al procesar el pago:"
+msgstr "Error processing payment:"
+
+msgid "Ocurrió un error inesperado al procesar el pago."
+msgstr "An unexpected error occurred while processing the payment."
+
+msgid "Prob. lluvia"
+msgstr "Rain chance"
+
+msgid "Fuente simulada:"
+msgstr "Simulated source:"
+
+msgid "Ocupado"
+msgstr "Occupied"
+
+msgid "¡Conflicto detectado! La duración seleccionada se solapa con una reserva ocupada."
+msgstr "Conflict detected! The selected duration overlaps an occupied reservation."
+
+msgid "Horario no disponible"
+msgstr "Time slot unavailable"
+
+msgid "La reserva excede el horario de cierre del complejo (11:00 PM)."
+msgstr "The reservation exceeds the complex closing time (11:00 PM)."
+
+msgid "Supera horario de atención"
+msgstr "Exceeds operating hours"
+
+msgid "Procesando Reserva..."
+msgstr "Processing reservation..."
+
+msgid "Error Backend:"
+msgstr "Backend error:"
+
+msgid "Ocurrió un error inesperado."
+msgstr "An unexpected error occurred."
+
+msgid "Ocurrió un error al enviar los datos. Intente de nuevo."
+msgstr "An error occurred while sending the data. Please try again."
+
+msgid "Partly cloudy"
+msgstr "Partly cloudy"
+
+msgid "Light rain"
+msgstr "Light rain"
+
+msgid "Conditions look favorable for booking"
+msgstr "Conditions look favorable for booking"
+
+msgid "Check the rain forecast before playing"
+msgstr "Check the rain forecast before playing"
+
+msgid "Unknown"
+msgstr "Unknown"
+
+msgid "External weather data received successfully"
+msgstr "External weather data received successfully"
+
+msgid "Configure ALLIED_TEAM_API_URL in your .env file to see allied team information."
+msgstr "Configure ALLIED_TEAM_API_URL in your .env file to see allied team information."
+
+msgid "Information received from the allied API."
+msgstr "Information received from the allied API."
+
+msgid "The allied team API is not responding right now."
+msgstr "The allied team API is not responding right now."
+
+msgid "Reservar %(deporte_label)s"
+msgstr "Book %(deporte_label)s"
+
+msgid "Clima estimado para %(deporte_label)s"
+msgstr "Weather forecast for %(deporte_label)s"
+
+msgid "Lo sentimos, no hay canchas de %(deporte_label)s activas en el complejo en este momento."
+msgstr "Sorry, there are no active %(deporte_label)s courts in the complex right now."
+
+msgid "Cancha"
+msgstr "Court"
+
+msgid "Método"
+msgstr "Method"
+
+msgid "Fecha Pago"
+msgstr "Payment Date"
+
+msgid "Estado de Pago"
+msgstr "Payment Status"
+
+msgid "No tienes notificaciones en tu bandeja de entrada."
+msgstr "You have no notifications in your inbox."
+
+msgid "¿Estás completamente seguro de que deseas cancelar este turno deportivo?"
+msgstr "Are you completely sure you want to cancel this sports slot?"
+
+msgid "La reserva ha sido cancelada correctamente."
+msgstr "The reservation has been canceled successfully."
+
+msgid "Error al cancelar:"
+msgstr "Error canceling:"
+
+msgid "Intente de nuevo."
+msgstr "Please try again."

@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^vir3)-1%!xy+o=b87t#m_u_q#1-$%b9$j+m9+buako0@0p3o%'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^vir3)-1%!xy+o=b87t#m_u_q#1-$%b9$j+m9+buako0@0p3o%')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes', 'on')
 
-ALLOWED_HOSTS = ['54.221.172.152', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '54.221.172.152,127.0.0.1,localhost,testserver').split(',') if host.strip()]
+
+MICROSERVICE_NOTIF_URL = os.getenv('MICROSERVICE_NOTIF_URL', 'http://micro_notificaciones:5001/api/v2/notificaciones/send')
+MICROSERVICE_REPORTS_URL = os.getenv('MICROSERVICE_REPORTS_URL', 'http://micro_reportes:5001/api/v1/reports/summary')
+ALLIED_TEAM_API_URL = os.getenv('ALLIED_TEAM_API_URL', '')
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY', '')
+WEATHER_API_URL = os.getenv('WEATHER_API_URL', '')
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/1')
+CELERY_TASK_ALWAYS_EAGER = os.getenv('CELERY_TASK_ALWAYS_EAGER', 'True').lower() in ('1', 'true', 'yes', 'on')
+CELERY_TASK_EAGER_PROPAGATES = True
 
 
 # Application definition
@@ -43,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,6 +93,19 @@ DATABASES = {
     }
 }
 
+database_url = os.getenv('DATABASE_URL', '').strip()
+if database_url:
+    parsed_url = urlparse(database_url)
+    if parsed_url.scheme in ('postgres', 'postgresql'):
+        DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': parsed_url.path.lstrip('/'),
+            'USER': parsed_url.username or '',
+            'PASSWORD': parsed_url.password or '',
+            'HOST': parsed_url.hostname or 'db',
+            'PORT': parsed_url.port or 5432,
+        }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -103,7 +129,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE', 'es')
+
+LANGUAGES = [
+    ('es', 'Español'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 TIME_ZONE = 'UTC'
 

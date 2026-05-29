@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Registrarse - GestionCanchas{% endblock %}
+{% block title %}{% trans "Registrarse" %} - GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -76,8 +76,8 @@
 <div class="signup-wrapper">
     <div class="signup-card">
         <div class="text-center mb-4">
-            <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-user-plus text-primary me-2"></i>Registro</h2>
-            <p class="text-muted small">Crea tu cuenta de deportista para comenzar.</p>
+            <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-user-plus text-primary me-2"></i>{% trans "Registro" %}</h2>
+            <p class="text-muted small">{% trans "Crea tu cuenta de deportista para comenzar." %}</p>
         </div>
 
         <form method="post">
@@ -100,12 +100,12 @@
             {% endfor %}
 
             <button type="submit" class="btn btn-glow-primary w-100 py-3 fw-bold mt-2">
-                <i class="fa-solid fa-user-plus me-2"></i>Registrar Cuenta
+                <i class="fa-solid fa-user-plus me-2"></i>{% trans "Registrar Cuenta" %}
             </button>
         </form>
 
         <div class="text-center mt-4 pt-2 border-top border-glow text-muted small">
-            ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">Inicia sesión</a>
+            {% trans "¿Ya tienes cuenta?" %} <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">{% trans "Inicia sesión" %}</a>
         </div>
     </div>
 </div>

@@ -1,8 +1,11 @@
 # reservas/services.py
+import os
+from django.db import transaction
 from django.db.models import Q
 from .models import Reserva, Cancha, Usuario, Pago
 from .domain.reserva_builder import ReservaBuilder
 from .infra.notificador_factory import NotificadorFactory
+from .tasks import enviar_confirmacion_reserva_async
 import uuid
 
 
@@ -37,8 +40,8 @@ class ReservaService:
             }
         )
 
-        # 2. Notificar creación
-        self.notificador.enviar_confirmacion(reserva)
+        # 2. Notificar creación sin bloquear la respuesta principal.
+        transaction.on_commit(lambda: enviar_confirmacion_reserva_async.delay(reserva.id))
         return reserva
 
     def cancelar(self, reserva_id):

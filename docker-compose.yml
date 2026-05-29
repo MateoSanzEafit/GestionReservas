@@ -1,28 +1,54 @@
-version: '3.8'
-
 services:
   # Monolito Django
   monolito_django:
     build: .
+    env_file:
+      - .env
     volumes:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/gestion_reservas
       - MICROSERVICE_NOTIF_URL=http://micro_notificaciones:5001/api/v2/notificaciones/send
+      - MICROSERVICE_REPORTS_URL=http://micro_reportes:5001/api/v1/reports/summary
+      - ALLIED_TEAM_API_URL=${ALLIED_TEAM_API_URL:-}
+      - WEATHER_API_KEY=${WEATHER_API_KEY:-}
+      - WEATHER_API_URL=${WEATHER_API_URL:-}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - CELERY_TASK_ALWAYS_EAGER=False
     ports:
       - "8000:8000"
     depends_on:
       - db
+      - redis
 
   # Microservicio Flask (Notificaciones)
   micro_notificaciones:
     build: ./micro_notificaciones
+    env_file:
+      - .env
     volumes:
       - ./micro_notificaciones:/app
     environment:
       - PYTHONUNBUFFERED=1
     ports:
       - "5002:5001"
+
+  # Microservicio Flask (Reportes)
+  micro_reportes:
+    build: ./micro_reportes
+    env_file:
+      - .env
+    volumes:
+      - ./micro_reportes:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SYSTEM_SUMMARY_URL=http://monolito_django:8000/api/system/summary/
+    ports:
+      - "5003:5001"
+    depends_on:
+      - monolito_django
 
   # Base de Datos (SQLite por ahora, pero lo dejamos listo)
   db:
@@ -37,6 +63,28 @@ services:
     # es mejor usar un servicio separado. Por simplicidad del taller
     # seguiremos usando SQLite si el código no está configurado para Postgres.
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: .
+    env_file:
+      - .env
+    command: celery -A gestion_canchas worker -l info
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/gestion_reservas
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - CELERY_TASK_ALWAYS_EAGER=False
+    depends_on:
+      - redis
+      - db
+
   # Orquestador Nginx
   nginx:
     image: nginx:alpine
@@ -47,6 +95,7 @@ services:
     depends_on:
       - monolito_django
       - micro_notificaciones
+      - micro_reportes
 
 volumes:
   postgres_data:

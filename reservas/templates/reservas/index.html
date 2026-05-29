@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Inicio — GestionCanchas{% endblock %}
+{% block title %}{% trans "Inicio" %} — GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -136,14 +136,14 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7 text-center text-lg-start">
-                <div class="badge bg-secondary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-4 fs-6 fw-semibold">
-                    <i class="fa-solid fa-bolt me-1"></i> Reservas Rápidas en Tiempo Real
+                    <div class="badge bg-secondary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-4 fs-6 fw-semibold">
+                    <i class="fa-solid fa-bolt me-1"></i> {% trans "Reservas Rápidas en Tiempo Real" %}
                 </div>
-                <h1 class="hero-glow-title">Domina la Cancha en Segundos</h1>
-                <p class="hero-subtitle">Reserva los mejores espacios deportivos de tu complejo favorito de forma simple y automática. Sin esperas, sin simulaciones.</p>
+                <h1 class="hero-glow-title">{% trans "Domina la Cancha en Segundos" %}</h1>
+                <p class="hero-subtitle">{% trans "Reserva los mejores espacios deportivos de tu complejo favorito de forma simple y automática. Sin esperas, sin simulaciones." %}</p>
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-                    <a href="#sports" class="btn btn-glow-primary btn-lg px-5 py-3"><i class="fa-solid fa-magnifying-glass me-2"></i>Buscar Cancha</a>
-                    <a href="{% url 'dashboard' %}" class="btn btn-outline-custom btn-lg px-5 py-3"><i class="fa-solid fa-calendar-check me-2"></i>Mis Reservas</a>
+                    <a href="#sports" class="btn btn-glow-primary btn-lg px-5 py-3"><i class="fa-solid fa-magnifying-glass me-2"></i>{% trans "Buscar Cancha" %}</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-custom btn-lg px-5 py-3"><i class="fa-solid fa-calendar-check me-2"></i>{% trans "Mis Reservas" %}</a>
                 </div>
             </div>
             <div class="col-lg-5 d-none d-lg-block">
@@ -155,7 +155,7 @@
                     <div class="my-4">
                         <i class="fa-solid fa-award text-warning display-1 my-3"></i>
                         <h4 class="fw-bold mt-3">Infraestructura Premium</h4>
-                        <p class="text-muted small">Canchas sintéticas y de cristal reglamentarias con iluminación nocturna profesional.</p>
+                        <p class="text-muted small">{% trans "Canchas sintéticas y de cristal reglamentarias con iluminación nocturna profesional." %}</p>
                     </div>
                     <div class="border-top border-glow pt-4 mt-4 d-flex justify-content-around text-center">
                         <div>
@@ -178,8 +178,8 @@
 <section id="sports" class="py-5" style="background: rgba(255,255,255,0.01);">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold text-white mb-3">Nuestras Disciplinas</h2>
-            <p class="text-muted fs-5">Selecciona el deporte que te apasiona y encuentra la cancha ideal.</p>
+            <h2 class="display-5 fw-bold text-white mb-3">{% trans "Nuestras Disciplinas" %}</h2>
+            <p class="text-muted fs-5">{% trans "Selecciona el deporte que te apasiona y encuentra la cancha ideal." %}</p>
             <div class="mx-auto bg-primary rounded-pill mt-3" style="width: 60px; height: 4px;"></div>
         </div>
 
@@ -189,12 +189,12 @@
                 <div class="sport-card-custom">
                     <div class="sport-card-img-wrapper">
                         <span class="sport-card-badge">Más Popular</span>
-                        <img src="{% static 'reservas/images/sport_football_card.png' %}" alt="Fútbol">
+                        <img src="{% static 'reservas/images/sport_football_card.png' %}" alt="{% trans 'Fútbol' %}">
                     </div>
                     <div class="sport-card-content">
-                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Fútbol</h3>
-                        <p class="sport-card-desc">Gramilla sintética de última generación para fútbol 5, 8 y 11. Con iluminación nocturna profesional LED.</p>
-                        <a href="{% url 'reservar_deporte' 'Fútbol' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Fútbol</a>
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>{% trans "Fútbol" %}</h3>
+                        <p class="sport-card-desc">{% trans "Gramilla sintética de última generación para fútbol 5, 8 y 11. Con iluminación nocturna profesional LED." %}</p>
+                        <a href="{% url 'reservar_deporte' 'Fútbol' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>{% trans "Reservar Fútbol" %}</a>
                     </div>
                 </div>
             </div>
@@ -204,12 +204,12 @@
                 <div class="sport-card-custom">
                     <div class="sport-card-img-wrapper">
                         <span class="sport-card-badge bg-info">Precisión</span>
-                        <img src="{% static 'reservas/images/sport_tennis_card.png' %}" alt="Tenis">
+                        <img src="{% static 'reservas/images/sport_tennis_card.png' %}" alt="{% trans 'Tenis' %}">
                     </div>
                     <div class="sport-card-content">
-                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Tenis</h3>
-                        <p class="sport-card-desc">Canchas profesionales de polvo de ladrillo y superficie dura certificada. Perfecto para singles o dobles.</p>
-                        <a href="{% url 'reservar_deporte' 'Tenis' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Tenis</a>
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>{% trans "Tenis" %}</h3>
+                        <p class="sport-card-desc">{% trans "Canchas profesionales de polvo de ladrillo y superficie dura certificada. Perfecto para singles o dobles." %}</p>
+                        <a href="{% url 'reservar_deporte' 'Tenis' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>{% trans "Reservar Tenis" %}</a>
                     </div>
                 </div>
             </div>
@@ -219,12 +219,12 @@
                 <div class="sport-card-custom">
                     <div class="sport-card-img-wrapper">
                         <span class="sport-card-badge bg-warning text-dark">Tendencia</span>
-                        <img src="{% static 'reservas/images/sport_paddle_card.png' %}" alt="Pádel">
+                        <img src="{% static 'reservas/images/sport_paddle_card.png' %}" alt="{% trans 'Pádel' %}">
                     </div>
                     <div class="sport-card-content">
-                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>Pádel</h3>
-                        <p class="sport-card-desc">Canchas panorámicas de vidrio templado. Disfruta de la disciplina que está revolucionando a todo el mundo.</p>
-                        <a href="{% url 'reservar_deporte' 'Pádel' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>Reservar Pádel</a>
+                        <h3 class="sport-card-title"><i class="fa-solid fa-circle-play text-primary me-2"></i>{% trans "Pádel" %}</h3>
+                        <p class="sport-card-desc">{% trans "Canchas panorámicas de vidrio templado. Disfruta de la disciplina que está revolucionando a todo el mundo." %}</p>
+                        <a href="{% url 'reservar_deporte' 'Pádel' %}" class="btn btn-glow-primary w-100 py-3"><i class="fa-solid fa-calendar-days me-2"></i>{% trans "Reservar Pádel" %}</a>
                     </div>
                 </div>
             </div>
@@ -236,8 +236,8 @@
 <section id="how-it-works" class="py-5">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold text-white mb-3">¿Cómo Funciona?</h2>
-            <p class="text-muted fs-5">Reserva tu espacio en tres simples pasos digitales.</p>
+            <h2 class="display-5 fw-bold text-white mb-3">{% trans "¿Cómo Funciona?" %}</h2>
+            <p class="text-muted fs-5">{% trans "Reserva tu espacio en tres simples pasos digitales." %}</p>
             <div class="mx-auto bg-primary rounded-pill mt-3" style="width: 60px; height: 4px;"></div>
         </div>
 
@@ -245,22 +245,22 @@
             <div class="col-md-4">
                 <div class="step-card">
                     <div class="step-number">1</div>
-                    <h4 class="fw-bold mb-3">Elige tu Cancha</h4>
-                    <p class="text-muted m-0">Selecciona tu disciplina favorita y revisa los horarios disponibles bloqueados en tiempo real mediante nuestra API.</p>
+                    <h4 class="fw-bold mb-3">{% trans "Elige tu Cancha" %}</h4>
+                    <p class="text-muted m-0">{% trans "Selecciona tu disciplina favorita y revisa los horarios disponibles bloqueados en tiempo real mediante nuestra API." %}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="step-card">
                     <div class="step-number">2</div>
-                    <h4 class="fw-bold mb-3">Confirma y Paga</h4>
-                    <p class="text-muted m-0">Revisa la tarifa por hora, selecciona tu intervalo y genera tu pago automático. Tu reserva queda registrada de inmediato.</p>
+                    <h4 class="fw-bold mb-3">{% trans "Confirma y Paga" %}</h4>
+                    <p class="text-muted m-0">{% trans "Revisa la tarifa por hora, selecciona tu intervalo y genera tu pago automático. Tu reserva queda registrada de inmediato." %}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="step-card">
                     <div class="step-number">3</div>
-                    <h4 class="fw-bold mb-3">¡A Jugar!</h4>
-                    <p class="text-muted m-0">Recibe tu notificación digital al instante, preséntala en la portería del complejo deportivo y ¡disfruta del partido!</p>
+                    <h4 class="fw-bold mb-3">{% trans "¡A Jugar!" %}</h4>
+                    <p class="text-muted m-0">{% trans "Recibe tu notificación digital al instante, preséntala en la portería del complejo deportivo y ¡disfruta del partido!" %}</p>
                 </div>
             </div>
         </div>

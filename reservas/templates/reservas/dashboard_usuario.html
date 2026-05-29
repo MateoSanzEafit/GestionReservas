@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Mi Panel de Usuario - GestionCanchas{% endblock %}
+{% block title %}{% trans "Mi Panel de Usuario" %} - GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -109,24 +109,43 @@
         <div class="glass-card mb-4">
             <div class="row align-items-center">
                 <div class="col-md-8 text-center text-md-start mb-3 mb-md-0">
-                    <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-hand-spock text-primary me-2"></i>¡Hola, {{ request.user.first_name|default:request.user.username }}!</h2>
-                    <p class="text-muted m-0">Gestiona tus canchas, consulta tus pagos y revisa tus partidos programados desde tu panel privado.</p>
+                    <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-hand-spock text-primary me-2"></i>{% blocktrans with username=request.user.first_name|default:request.user.username %}¡Hola, {{ username }}!{% endblocktrans %}</h2>
+                    <p class="text-muted m-0">{% trans "Gestiona tus canchas, consulta tus pagos y revisa tus partidos programados desde tu panel privado." %}</p>
                 </div>
                 <div class="col-md-4 text-center text-md-end">
                     <a href="/#sports" class="btn btn-glow-primary px-4 py-2 fw-bold">
-                        <i class="fa-solid fa-calendar-plus me-2"></i>Nueva Reserva
+                        <i class="fa-solid fa-calendar-plus me-2"></i>{% trans "Nueva Reserva" %}
                     </a>
                 </div>
             </div>
         </div>
+
+        {% if allied_team_info %}
+        <div class="glass-card mb-4 border border-primary border-opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-md-center">
+                <div>
+                    <span class="badge bg-primary text-dark fw-bold mb-2">{% trans "Integración Externa" %}</span>
+                    <h5 class="fw-bold text-white mb-1">{% trans "Información del equipo aliado" %}</h5>
+                    <p class="text-muted m-0">{{ allied_team_info.message }}</p>
+                </div>
+                <div class="text-md-end">
+                    {% if allied_team_info.available %}
+                        <span class="badge bg-success">{% trans "Disponible" %}</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">{% trans "No disponible" %}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         {% if request.GET.reserva_success %}
         <div class="alert alert-success alert-dismissible fade show border-0 rounded-4 p-4 shadow-lg mb-4" role="alert" style="background: rgba(40,167,69,0.15); color: #2ecc71;">
             <div class="d-flex align-items-start gap-3">
                 <i class="fa-solid fa-circle-check fs-2 mt-1"></i>
                 <div>
-                    <h5 class="alert-heading fw-bold mb-1">¡Turno Reservado con Éxito!</h5>
-                    <p class="m-0">Tu reserva con ID <code>{{ request.GET.id }}</code> ha sido guardada en estado <strong>PENDIENTE</strong>. Para confirmarla por completo, un administrador debe aprobar la simulación del pago asociado.</p>
+                    <h5 class="alert-heading fw-bold mb-1">{% trans "¡Turno Reservado con Éxito!" %}</h5>
+                    <p class="m-0">{% blocktrans with reserva_id=request.GET.id %}Tu reserva con ID <code>{{ reserva_id }}</code> ha sido guardada en estado <strong>PENDIENTE</strong>. Para confirmarla por completo, un administrador debe aprobar la simulación del pago asociado.{% endblocktrans %}</p>
                 </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: invert(1);"></button>
@@ -139,25 +158,25 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas"
                         type="button" role="tab" aria-controls="reservas" aria-selected="true">
-                        <i class="fa-solid fa-calendar-check me-2"></i>Reservas Activas
+                        <i class="fa-solid fa-calendar-check me-2"></i>{% trans "Reservas Activas" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial"
                         type="button" role="tab" aria-controls="historial" aria-selected="false">
-                        <i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Turnos
+                        <i class="fa-solid fa-clock-rotate-left me-2"></i>{% trans "Historial de Turnos" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos"
                         type="button" role="tab" aria-controls="pagos" aria-selected="false">
-                        <i class="fa-solid fa-receipt me-2"></i>Mis Pagos
+                        <i class="fa-solid fa-receipt me-2"></i>{% trans "Mis Pagos" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="notif-tab" data-bs-toggle="tab" data-bs-target="#notif"
                         type="button" role="tab" aria-controls="notif" aria-selected="false">
-                        <i class="fa-solid fa-bell me-2"></i>Notificaciones
+                        <i class="fa-solid fa-bell me-2"></i>{% trans "Notificaciones" %}
                         {% if notificaciones %}
                         <span class="badge bg-danger rounded-circle ms-1" style="font-size: 0.65rem;">{{ notificaciones.count }}</span>
                         {% endif %}
@@ -172,22 +191,22 @@
                     {% if not reservas_activas %}
                     <div class="text-center py-5">
                         <i class="fa-solid fa-futbol text-muted display-3 mb-3"></i>
-                        <h4 class="fw-bold">No tienes reservas activas</h4>
-                        <p class="text-muted">¿Qué esperas para salir a la cancha? Elige tu deporte y reserva tu bloque ahora.</p>
-                        <a href="/#sports" class="btn btn-outline-custom mt-2"><i class="fa-solid fa-magnifying-glass me-2"></i>Explorar Deportes</a>
+                        <h4 class="fw-bold">{% trans "No tienes reservas activas" %}</h4>
+                        <p class="text-muted">{% trans "¿Qué esperas para salir a la cancha? Elige tu deporte y reserva tu bloque ahora." %}</p>
+                        <a href="/#sports" class="btn btn-outline-custom mt-2"><i class="fa-solid fa-magnifying-glass me-2"></i>{% trans "Explorar Deportes" %}</a>
                     </div>
                     {% else %}
                     <div class="table-responsive">
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID Reserva</th>
-                                    <th>Cancha / Deporte</th>
-                                    <th>Fecha</th>
-                                    <th>Horario</th>
-                                    <th>Costo</th>
-                                    <th>Estado</th>
-                                    <th class="text-end">Acción</th>
+                                    <th>{% trans "ID Reserva" %}</th>
+                                    <th>{% trans "Cancha / Deporte" %}</th>
+                                    <th>{% trans "Fecha" %}</th>
+                                    <th>{% trans "Horario" %}</th>
+                                    <th>{% trans "Costo" %}</th>
+                                    <th>{% trans "Estado" %}</th>
+                                    <th class="text-end">{% trans "Acción" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -206,7 +225,7 @@
                                     </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-sm btn-outline-danger px-3 rounded-pill" onclick="cancelarTurno('{{ r.id }}')">
-                                            <i class="fa-solid fa-trash-can me-1"></i> Cancelar
+                                            <i class="fa-solid fa-trash-can me-1"></i>{% trans "Cancelar" %}
                                         </button>
                                     </td>
                                 </tr>
@@ -222,19 +241,19 @@
                     {% if not historial_reservas %}
                     <div class="text-center py-5 text-muted">
                         <i class="fa-solid fa-history display-4 mb-3"></i>
-                        <p class="m-0">Tu historial está vacío. Aún no has completado partidos.</p>
+                        <p class="m-0">{% trans "Tu historial está vacío. Aún no has completado partidos." %}</p>
                     </div>
                     {% else %}
                     <div class="table-responsive">
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID Reserva</th>
-                                    <th>Cancha / Deporte</th>
-                                    <th>Fecha</th>
-                                    <th>Horario</th>
-                                    <th>Costo</th>
-                                    <th>Estado</th>
+                                    <th>{% trans "ID Reserva" %}</th>
+                                    <th>{% trans "Cancha / Deporte" %}</th>
+                                    <th>{% trans "Fecha" %}</th>
+                                    <th>{% trans "Horario" %}</th>
+                                    <th>{% trans "Costo" %}</th>
+                                    <th>{% trans "Estado" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -264,19 +283,19 @@
                     {% if not pagos %}
                     <div class="text-center py-5 text-muted">
                         <i class="fa-solid fa-credit-card display-4 mb-3"></i>
-                        <p class="m-0">No se registran transacciones de pago para tu cuenta.</p>
+                        <p class="m-0">{% trans "No se registran transacciones de pago para tu cuenta." %}</p>
                     </div>
                     {% else %}
                     <div class="table-responsive">
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>Código Pago</th>
-                                    <th>Costo Reserva</th>
-                                    <th>Cancha</th>
-                                    <th>Método</th>
-                                    <th>Fecha Pago</th>
-                                    <th>Estado de Pago</th>
+                                    <th>{% trans "Código Pago" %}</th>
+                                    <th>{% trans "Costo Reserva" %}</th>
+                                    <th>{% trans "Cancha" %}</th>
+                                    <th>{% trans "Método" %}</th>
+                                    <th>{% trans "Fecha Pago" %}</th>
+                                    <th>{% trans "Estado de Pago" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -303,7 +322,7 @@
                     {% if not notificaciones %}
                     <div class="text-center py-5 text-muted">
                         <i class="fa-solid fa-bell-slash display-4 mb-3"></i>
-                        <p class="m-0">No tienes notificaciones en tu bandeja de entrada.</p>
+                        <p class="m-0">{% trans "No tienes notificaciones en tu bandeja de entrada." %}</p>
                     </div>
                     {% else %}
                     <div class="d-flex flex-column rounded-3 overflow-hidden border border-glow">
@@ -331,7 +350,7 @@
 {% block extra_js %}
 <script>
     function cancelarTurno(reservaId) {
-        if (!confirm('¿Estás completamente seguro de que deseas cancelar este turno deportivo?')) return;
+        if (!confirm('{% trans "¿Estás completamente seguro de que deseas cancelar este turno deportivo?" %}')) return;
 
         // AJAX Request to cancel
         const csrfToken = '{{ csrf_token }}';
@@ -346,10 +365,10 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('La reserva ha sido cancelada correctamente.');
+                alert('{% trans "La reserva ha sido cancelada correctamente." %}');
                 window.location.reload();
             } else {
-                alert('Error al cancelar: ' + (data.error || 'Intente de nuevo.'));
+                alert('{% trans "Error al cancelar:" %} ' + (data.error || '{% trans "Intente de nuevo." %}'));
             }
         })
         .catch(err => {

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Iniciar Sesión - GestionCanchas{% endblock %}
+{% block title %}{% trans "Iniciar Sesión" %} - GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -33,28 +33,28 @@
 <div class="login-wrapper">
     <div class="login-card">
         <div class="text-center mb-4">
-            <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-lock text-primary me-2"></i>Ingreso</h2>
-            <p class="text-muted small">Ingresa tus credenciales para acceder a tu panel.</p>
+            <h2 class="fw-bold text-white mb-1"><i class="fa-solid fa-lock text-primary me-2"></i>{% trans "Ingreso" %}</h2>
+            <p class="text-muted small">{% trans "Ingresa tus credenciales para acceder a tu panel." %}</p>
         </div>
 
         {% if form.errors %}
         <div class="alert alert-danger border-0 small rounded-3 py-3 text-center mb-4" style="background: rgba(220,53,69,0.1); color: #dc3545;">
-            <i class="fa-solid fa-circle-exclamation me-1"></i> Usuario o contraseña incorrectos.
+            <i class="fa-solid fa-circle-exclamation me-1"></i> {% trans "Usuario o contraseña incorrectos." %}
         </div>
         {% endif %}
 
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="id_username" class="form-label small text-muted">Nombre de Usuario</label>
+                <label for="id_username" class="form-label small text-muted">{% trans "Nombre de Usuario" %}</label>
                 <div class="input-group">
                     <span class="input-group-text bg-black border border-glow text-muted"><i class="fa-solid fa-user"></i></span>
-                    <input type="text" name="username" id="id_username" class="form-control bg-black border border-glow text-white py-2" placeholder="Tu usuario" required autofocus>
+                    <input type="text" name="username" id="id_username" class="form-control bg-black border border-glow text-white py-2" placeholder="{% trans 'Tu usuario' %}" required autofocus>
                 </div>
             </div>
 
             <div class="mb-4">
-                <label for="id_password" class="form-label small text-muted">Contraseña</label>
+                <label for="id_password" class="form-label small text-muted">{% trans "Contraseña" %}</label>
                 <div class="input-group">
                     <span class="input-group-text bg-black border border-glow text-muted"><i class="fa-solid fa-key"></i></span>
                     <input type="password" name="password" id="id_password" class="form-control bg-black border border-glow text-white py-2" placeholder="••••••••" required>
@@ -62,12 +62,12 @@
             </div>
 
             <button type="submit" class="btn btn-glow-primary w-100 py-3 fw-bold">
-                <i class="fa-solid fa-right-to-bracket me-2"></i>Iniciar Sesión
+                <i class="fa-solid fa-right-to-bracket me-2"></i>{% trans "Iniciar Sesión" %}
             </button>
         </form>
 
         <div class="text-center mt-4 pt-2 border-top border-glow text-muted small">
-            ¿No tienes cuenta? <a href="{% url 'signup' %}" class="text-primary fw-bold text-decoration-none">Regístrate aquí</a>
+            {% trans "¿No tienes cuenta?" %} <a href="{% url 'signup' %}" class="text-primary fw-bold text-decoration-none">{% trans "Regístrate aquí" %}</a>
         </div>
     </div>
 </div>

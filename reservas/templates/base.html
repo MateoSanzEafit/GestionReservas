@@ -1,11 +1,11 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ request.LANGUAGE_CODE|default:'es' }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GestionCanchas — Reserva tu Espacio Deportivo{% endblock %}</title>
+    <title>{% block title %}{% trans "GestionCanchas — Reserva tu Espacio Deportivo" %}{% endblock %}</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,35 +164,55 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/"><i class="fa-solid fa-house me-1"></i> Inicio</a>
+                        <a class="nav-link nav-link-custom" href="/"><i class="fa-solid fa-house me-1"></i>{% trans "Inicio" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/#sports"><i class="fa-solid fa-circle-play me-1"></i> Deportes</a>
+                        <a class="nav-link nav-link-custom" href="/#sports"><i class="fa-solid fa-circle-play me-1"></i>{% trans "Deportes" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/#how-it-works"><i class="fa-solid fa-circle-info me-1"></i> Cómo Funciona</a>
+                        <a class="nav-link nav-link-custom" href="/#how-it-works"><i class="fa-solid fa-circle-info me-1"></i>{% trans "Cómo Funciona" %}</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{% url 'dashboard' %}"><i class="fa-solid fa-table-columns me-1"></i> Mi Panel</a>
+                        <a class="nav-link nav-link-custom" href="{% url 'dashboard' %}"><i class="fa-solid fa-table-columns me-1"></i>{% trans "Mi Panel" %}</a>
                     </li>
                     {% if user.is_staff %}
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom text-warning" href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
+                        <a class="nav-link nav-link-custom text-warning" href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-shield-halved me-1"></i>{% trans "Admin Panel" %}</a>
                     </li>
                     {% endif %}
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <form action="{% url 'set_language' %}" method="post" class="d-inline-flex align-items-center gap-2">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                            <select name="language" class="form-select form-select-sm bg-dark border border-glow text-white" onchange="this.form.submit()" style="min-width: 120px;">
+                                <option value="es" {% if request.LANGUAGE_CODE == 'es' %}selected{% endif %}>{% trans "Español" %}</option>
+                                <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>{% trans "Inglés" %}</option>
+                            </select>
+                        </form>
+                    </li>
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-custom py-2"><i class="fa-solid fa-right-from-bracket me-1"></i> Salir</button>
+                            <button type="submit" class="btn btn-outline-custom py-2"><i class="fa-solid fa-right-from-bracket me-1"></i>{% trans "Salir" %}</button>
                         </form>
                     </li>
                     {% else %}
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="{% url 'login' %}" class="btn btn-outline-custom"><i class="fa-solid fa-right-to-bracket me-1"></i> Iniciar Sesión</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-custom"><i class="fa-solid fa-right-to-bracket me-1"></i>{% trans "Iniciar Sesión" %}</a>
                     </li>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                        <a href="{% url 'signup' %}" class="btn btn-glow-primary"><i class="fa-solid fa-user-plus me-1"></i> Registrarse</a>
+                        <a href="{% url 'signup' %}" class="btn btn-glow-primary"><i class="fa-solid fa-user-plus me-1"></i>{% trans "Registrarse" %}</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <form action="{% url 'set_language' %}" method="post" class="d-inline-flex align-items-center gap-2">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                            <select name="language" class="form-select form-select-sm bg-dark border border-glow text-white" onchange="this.form.submit()" style="min-width: 120px;">
+                                <option value="es" {% if request.LANGUAGE_CODE == 'es' %}selected{% endif %}>{% trans "Español" %}</option>
+                                <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>{% trans "Inglés" %}</option>
+                            </select>
+                        </form>
                     </li>
                     {% endif %}
                 </ul>
@@ -210,7 +230,7 @@
         <div class="container text-center py-2">
             <div class="row align-items-center">
                 <div class="col-lg-6 text-lg-start mb-3 mb-lg-0">
-                    <p class="m-0">&copy; 2026 <strong>GestionCanchas</strong>. Todos los derechos reservados. Diseñado para EAFIT.</p>
+                    <p class="m-0">&copy; 2026 <strong>GestionCanchas</strong>. {% trans "Todos los derechos reservados. Diseñado para EAFIT." %}</p>
                 </div>
                 <div class="col-lg-6 text-lg-end">
                     <div class="d-inline-flex gap-4">

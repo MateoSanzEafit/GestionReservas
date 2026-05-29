@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Panel de Control Administrativo - GestionCanchas{% endblock %}
+{% block title %}{% trans "Panel de Control Administrativo" %} - GestionCanchas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -127,15 +127,15 @@
         <!-- Header -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
             <div>
-                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-1 mb-2 fw-semibold">
-                    <i class="fa-solid fa-shield-halved me-1"></i> Módulo de Administración
+                    <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-1 mb-2 fw-semibold">
+                    <i class="fa-solid fa-shield-halved me-1"></i> {% trans "Módulo de Administración" %}
                 </span>
-                <h1 class="fw-bold text-white m-0">Panel Administrativo</h1>
-                <p class="text-muted m-0">Control global de usuarios, canchas, reservas y flujos de pago del complejo deportivo.</p>
+                <h1 class="fw-bold text-white m-0">{% trans "Panel Administrativo" %}</h1>
+                <p class="text-muted m-0">{% trans "Control global de usuarios, canchas, reservas y flujos de pago del complejo deportivo." %}</p>
             </div>
             <div>
                 <button type="button" class="btn btn-glow-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#createCanchaModal">
-                    <i class="fa-solid fa-plus-circle me-2"></i>Añadir Cancha
+                    <i class="fa-solid fa-plus-circle me-2"></i>{% trans "Añadir Cancha" %}
                 </button>
             </div>
         </div>
@@ -144,28 +144,28 @@
         <div class="row g-4 mb-5">
             <div class="col-sm-6 col-lg-3">
                 <div class="kpi-card">
-                    <div class="text-muted small fw-semibold uppercase mb-1">Total Usuarios</div>
+                    <div class="text-muted small fw-semibold uppercase mb-1">{% trans "Total Usuarios" %}</div>
                     <div class="kpi-val">{{ total_usuarios }}</div>
                     <i class="fa-solid fa-users kpi-icon"></i>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="kpi-card">
-                    <div class="text-muted small fw-semibold uppercase mb-1">Canchas Activas</div>
+                    <div class="text-muted small fw-semibold uppercase mb-1">{% trans "Canchas Activas" %}</div>
                     <div class="kpi-val">{{ total_canchas }}</div>
                     <i class="fa-solid fa-table-tennis-paddle-ball kpi-icon"></i>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="kpi-card">
-                    <div class="text-muted small fw-semibold uppercase mb-1">Reservas Registradas</div>
+                    <div class="text-muted small fw-semibold uppercase mb-1">{% trans "Reservas Registradas" %}</div>
                     <div class="kpi-val">{{ total_reservas }}</div>
                     <i class="fa-solid fa-calendar-check kpi-icon"></i>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="kpi-card">
-                    <div class="text-muted small fw-semibold uppercase mb-1">Ingresos Totales</div>
+                    <div class="text-muted small fw-semibold uppercase mb-1">{% trans "Ingresos Totales" %}</div>
                     <div class="kpi-val text-success">${{ total_pagado }}</div>
                     <i class="fa-solid fa-hand-holding-dollar kpi-icon"></i>
                 </div>
@@ -178,25 +178,25 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="canchas-tab" data-bs-toggle="tab" data-bs-target="#canchas"
                         type="button" role="tab" aria-controls="canchas" aria-selected="true">
-                        <i class="fa-solid fa-circle-play me-2"></i>Canchas
+                        <i class="fa-solid fa-circle-play me-2"></i>{% trans "Canchas" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos"
                         type="button" role="tab" aria-controls="pagos" aria-selected="false">
-                        <i class="fa-solid fa-credit-card me-2"></i>Procesar Pagos
+                        <i class="fa-solid fa-credit-card me-2"></i>{% trans "Procesar Pagos" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas"
                         type="button" role="tab" aria-controls="reservas" aria-selected="false">
-                        <i class="fa-solid fa-list me-2"></i>Reservas
+                        <i class="fa-solid fa-list me-2"></i>{% trans "Reservas" %}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios"
                         type="button" role="tab" aria-controls="usuarios" aria-selected="false">
-                        <i class="fa-solid fa-users-gear me-2"></i>Usuarios
+                        <i class="fa-solid fa-users-gear me-2"></i>{% trans "Usuarios" %}
                     </button>
                 </li>
             </ul>
@@ -209,13 +209,13 @@
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Cancha Deportiva</th>
-                                    <th>Tipo de Deporte</th>
-                                    <th>Ubicación</th>
-                                    <th>Tarifa por Hora</th>
-                                    <th>Estado</th>
-                                    <th class="text-end">Acciones</th>
+                                    <th>{% trans "ID" %}</th>
+                                    <th>{% trans "Cancha Deportiva" %}</th>
+                                    <th>{% trans "Tipo de Deporte" %}</th>
+                                    <th>{% trans "Ubicación" %}</th>
+                                    <th>{% trans "Tarifa por Hora" %}</th>
+                                    <th>{% trans "Estado" %}</th>
+                                    <th class="text-end">{% trans "Acciones" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -233,7 +233,7 @@
                                     </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-sm btn-outline-danger px-3 rounded-pill" onclick="eliminarCancha('{{ c.id }}')">
-                                            <i class="fa-solid fa-trash-can me-1"></i> Eliminar
+                                            <i class="fa-solid fa-trash-can me-1"></i>{% trans "Eliminar" %}
                                         </button>
                                     </td>
                                 </tr>
@@ -249,13 +249,13 @@
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID Pago</th>
-                                    <th>Usuario</th>
-                                    <th>Monto</th>
-                                    <th>Cancha</th>
-                                    <th>Fecha</th>
-                                    <th>Estado</th>
-                                    <th class="text-end">Simular Aprobación</th>
+                                    <th>{% trans "ID Pago" %}</th>
+                                    <th>{% trans "Usuario" %}</th>
+                                    <th>{% trans "Monto" %}</th>
+                                    <th>{% trans "Cancha" %}</th>
+                                    <th>{% trans "Fecha" %}</th>
+                                    <th>{% trans "Estado" %}</th>
+                                    <th class="text-end">{% trans "Simular Aprobación" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -272,13 +272,13 @@
                                     <td class="text-end">
                                         {% if p.estado == 'PENDIENTE' %}
                                         <button type="button" class="btn btn-sm btn-success px-3 rounded-pill me-2" onclick="procesarPago('{{ p.id }}', 'aprobar')">
-                                            <i class="fa-solid fa-check me-1"></i> Aprobar
+                                            <i class="fa-solid fa-check me-1"></i>{% trans "Aprobar" %}
                                         </button>
                                         <button type="button" class="btn btn-sm btn-outline-danger px-3 rounded-pill" onclick="procesarPago('{{ p.id }}', 'rechazar')">
-                                            <i class="fa-solid fa-xmark me-1"></i> Rechazar
+                                            <i class="fa-solid fa-xmark me-1"></i>{% trans "Rechazar" %}
                                         </button>
                                         {% else %}
-                                        <span class="text-muted small">Procesado</span>
+                                        <span class="text-muted small">{% trans "Procesado" %}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -294,13 +294,13 @@
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID Reserva</th>
-                                    <th>Usuario</th>
-                                    <th>Cancha / Deporte</th>
-                                    <th>Fecha</th>
-                                    <th>Horario</th>
-                                    <th>Costo</th>
-                                    <th>Estado</th>
+                                    <th>{% trans "ID Reserva" %}</th>
+                                    <th>{% trans "Usuario" %}</th>
+                                    <th>{% trans "Cancha / Deporte" %}</th>
+                                    <th>{% trans "Fecha" %}</th>
+                                    <th>{% trans "Horario" %}</th>
+                                    <th>{% trans "Costo" %}</th>
+                                    <th>{% trans "Estado" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -331,11 +331,11 @@
                         <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>Username (ID)</th>
-                                    <th>Nombre del Usuario</th>
-                                    <th>Correo Electrónico</th>
-                                    <th>Fecha Registro</th>
-                                    <th>Estado</th>
+                                    <th>{% trans "Username (ID)" %}</th>
+                                    <th>{% trans "Nombre del Usuario" %}</th>
+                                    <th>{% trans "Correo Electrónico" %}</th>
+                                    <th>{% trans "Fecha Registro" %}</th>
+                                    <th>{% trans "Estado" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -368,7 +368,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark border border-glow text-white rounded-4">
             <div class="modal-header border-bottom border-glow p-4">
-                <h5 class="modal-title fw-bold" id="createCanchaModalLabel"><i class="fa-solid fa-plus-circle text-primary me-2"></i>Añadir Nueva Cancha</h5>
+                <h5 class="modal-title fw-bold" id="createCanchaModalLabel"><i class="fa-solid fa-plus-circle text-primary me-2"></i>{% trans "Añadir Nueva Cancha" %}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{% url 'crear_cancha' %}" method="post">
@@ -376,42 +376,42 @@
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="cancha_id" class="form-label small text-muted">ID Cancha (Único)</label>
-                            <input type="text" name="id" id="cancha_id" class="form-control bg-black border border-glow text-white py-2" required placeholder="ej. fut3">
+                            <label for="cancha_id" class="form-label small text-muted">{% trans "ID Cancha (Único)" %}</label>
+                            <input type="text" name="id" id="cancha_id" class="form-control bg-black border border-glow text-white py-2" required placeholder="{% trans 'ej. fut3' %}">
                         </div>
                         <div class="col-md-6">
-                            <label for="cancha_tipo" class="form-label small text-muted">Deporte</label>
+                            <label for="cancha_tipo" class="form-label small text-muted">{% trans "Deporte" %}</label>
                             <select name="tipo" id="cancha_tipo" class="form-select bg-black border border-glow text-white py-2" required>
-                                <option value="Fútbol">Fútbol</option>
-                                <option value="Tenis">Tenis</option>
-                                <option value="Pádel">Pádel</option>
+                                <option value="Fútbol">{% trans "Fútbol" %}</option>
+                                <option value="Tenis">{% trans "Tenis" %}</option>
+                                <option value="Pádel">{% trans "Pádel" %}</option>
                             </select>
                         </div>
                         <div class="col-12">
-                            <label for="cancha_nombre" class="form-label small text-muted">Nombre de la Cancha</label>
-                            <input type="text" name="nombre" id="cancha_nombre" class="form-control bg-black border border-glow text-white py-2" required placeholder="ej. Cancha Sintética 3">
+                            <label for="cancha_nombre" class="form-label small text-muted">{% trans "Nombre de la Cancha" %}</label>
+                            <input type="text" name="nombre" id="cancha_nombre" class="form-control bg-black border border-glow text-white py-2" required placeholder="{% trans 'ej. Cancha Sintética 3' %}">
                         </div>
                         <div class="col-12">
-                            <label for="cancha_ubicacion" class="form-label small text-muted">Ubicación</label>
-                            <input type="text" name="ubicacion" id="cancha_ubicacion" class="form-control bg-black border border-glow text-white py-2" required placeholder="ej. Sector Norte, junto a Cafetería">
+                            <label for="cancha_ubicacion" class="form-label small text-muted">{% trans "Ubicación" %}</label>
+                            <input type="text" name="ubicacion" id="cancha_ubicacion" class="form-control bg-black border border-glow text-white py-2" required placeholder="{% trans 'ej. Sector Norte, junto a Cafetería' %}">
                         </div>
                         <div class="col-md-6">
-                            <label for="cancha_tarifa" class="form-label small text-muted">Tarifa por Hora ($)</label>
+                            <label for="cancha_tarifa" class="form-label small text-muted">{% trans "Tarifa por Hora ($)" %}</label>
                             <input type="number" step="0.01" name="tarifa_por_hora" id="cancha_tarifa" class="form-control bg-black border border-glow text-white py-2" required placeholder="120.00">
                         </div>
                         <div class="col-md-6">
-                            <label for="cancha_imagen" class="form-label small text-muted">Imagen URL (Opcional)</label>
+                            <label for="cancha_imagen" class="form-label small text-muted">{% trans "Imagen URL (Opcional)" %}</label>
                             <input type="text" name="imagen" id="cancha_imagen" class="form-control bg-black border border-glow text-white py-2" placeholder="reservas/images/sport_football_card.png">
                         </div>
                         <div class="col-12">
-                            <label for="cancha_desc" class="form-label small text-muted">Descripción detallada</label>
-                            <textarea name="descripcion" id="cancha_desc" class="form-control bg-black border border-glow text-white py-2" rows="3" placeholder="Gramado sintético FIFA Preferred, techada y con iluminación artificial..."></textarea>
+                            <label for="cancha_desc" class="form-label small text-muted">{% trans "Descripción detallada" %}</label>
+                            <textarea name="descripcion" id="cancha_desc" class="form-control bg-black border border-glow text-white py-2" rows="3" placeholder="{% trans 'Gramado sintético FIFA Preferred, techada y con iluminación artificial...' %}"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer border-top border-glow p-4">
-                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-glow-primary px-4 py-2">Crear Cancha</button>
+                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">{% trans "Cancelar" %}</button>
+                    <button type="submit" class="btn btn-glow-primary px-4 py-2">{% trans "Crear Cancha" %}</button>
                 </div>
             </form>
         </div>
@@ -421,7 +421,7 @@
 {% block extra_js %}
 <script>
     function eliminarCancha(canchaId) {
-        if (!confirm('¿Estás seguro de que deseas eliminar permanentemente esta cancha del complejo deportivo?')) return;
+        if (!confirm('{% trans "¿Estás seguro de que deseas eliminar permanentemente esta cancha del complejo deportivo?" %}')) return;
         
         const csrfToken = '{{ csrf_token }}';
         
@@ -435,20 +435,20 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('Cancha eliminada con éxito.');
+                alert('{% trans "Cancha eliminada con éxito." %}');
                 window.location.reload();
             } else {
-                alert('Error al eliminar: ' + (data.error || 'Intente de nuevo.'));
+                alert('{% trans "Error al eliminar:" %} ' + (data.error || '{% trans "Intente de nuevo." %}'));
             }
         })
         .catch(err => {
             console.error(err);
-            alert('Ocurrió un error inesperado al eliminar la cancha.');
+            alert('{% trans "Ocurrió un error inesperado al eliminar la cancha." %}');
         });
     }
 
     function procesarPago(pagoId, accion) {
-        if (!confirm(`¿Deseas ${accion} este pago de reserva?`)) return;
+        if (!confirm(`{% trans "¿Deseas" %} ${accion} {% trans "este pago de reserva?" %}`)) return;
         
         const csrfToken = '{{ csrf_token }}';
         
@@ -462,15 +462,15 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(`Pago ${accion}do exitosamente.`);
+                alert(`{% trans "Pago" %} ${accion}do {% trans "exitosamente." %}`);
                 window.location.reload();
             } else {
-                alert('Error al procesar el pago: ' + (data.error || 'Intente de nuevo.'));
+                alert('{% trans "Error al procesar el pago:" %} ' + (data.error || '{% trans "Intente de nuevo." %}'));
             }
         })
         .catch(err => {
             console.error(err);
-            alert('Ocurrió un error inesperado al procesar el pago.');
+            alert('{% trans "Ocurrió un error inesperado al procesar el pago." %}');
         });
     }
 </script>
