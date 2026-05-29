@@ -27,12 +27,14 @@ class ReservaService:
         reserva.save()
         
         # 1. Crear automáticamente el objeto Pago asociado
-        Pago.objects.create(
-            id=str(uuid.uuid4()),
+        Pago.objects.get_or_create(
             reserva=reserva,
-            metodo_pago="EFECTIVO",
-            monto=reserva.costo_total,
-            estado="PENDIENTE"
+            defaults={
+                'id': str(uuid.uuid4()),
+                'metodo_pago': Pago.MetodoPago.EFECTIVO,
+                'monto': reserva.costo_total,
+                'estado': Pago.EstadoPago.PENDIENTE,
+            }
         )
 
         # 2. Notificar creación
@@ -42,12 +44,12 @@ class ReservaService:
     def cancelar(self, reserva_id):
         try:
             r = Reserva.objects.get(id=reserva_id)
-            r.estado = "CANCELADA"
+            r.estado = Reserva.Estado.CANCELADA
             r.save()
             
             # Cancelar pagos pendientes asociados
-            for pago in r.pagos.filter(estado="PENDIENTE"):
-                pago.estado = "RECHAZADO"
+            for pago in r.pagos.filter(estado=Pago.EstadoPago.PENDIENTE):
+                pago.estado = Pago.EstadoPago.RECHAZADO
                 pago.save()
                 
             self.notificador.enviar_cancelacion(r)
@@ -58,7 +60,7 @@ class ReservaService:
     def confirmar(self, reserva_id):
         try:
             r = Reserva.objects.get(id=reserva_id)
-            r.estado = "CONFIRMADA"
+            r.estado = Reserva.Estado.CONFIRMADA
             r.save()
             return True
         except Reserva.DoesNotExist:
@@ -67,13 +69,13 @@ class ReservaService:
     def aprobar_pago(self, pago_id, metodo=None):
         try:
             pago = Pago.objects.get(id=pago_id)
-            pago.estado = "PAGADO"
+            pago.estado = Pago.EstadoPago.PAGADO
             if metodo:
                 pago.metodo_pago = metodo
             pago.save()
             
             reserva = pago.reserva
-            reserva.estado = "CONFIRMADA"
+            reserva.estado = Reserva.Estado.CONFIRMADA
             reserva.save()
             
             self.notificador.enviar_notificacion_pago(reserva, "APROBADO")
@@ -84,11 +86,11 @@ class ReservaService:
     def rechazar_pago(self, pago_id):
         try:
             pago = Pago.objects.get(id=pago_id)
-            pago.estado = "RECHAZADO"
+            pago.estado = Pago.EstadoPago.RECHAZADO
             pago.save()
             
             reserva = pago.reserva
-            reserva.estado = "RECHAZADA"
+            reserva.estado = Reserva.Estado.RECHAZADA
             reserva.save()
             
             self.notificador.enviar_notificacion_pago(reserva, "RECHAZADO")
@@ -111,7 +113,7 @@ def check_availability(cancha, fecha, hora_inicio, hora_fin):
     overlapping = Reserva.objects.filter(
         cancha=cancha,
         fecha=fecha,
-        estado__in=["PENDIENTE", "CONFIRMADA"],
+        estado__in=[Reserva.Estado.PENDIENTE, Reserva.Estado.CONFIRMADA],
     ).filter(
         Q(hora_inicio__lt=hora_fin) & Q(hora_fin__gt=hora_inicio)
     )
